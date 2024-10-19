@@ -23,7 +23,7 @@ function* updateTask(action: any) {
 function* fetchAccount(action: any) {
     try {
 
-        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/get-account/${action.payload.id}`, method: 'GET'  });
+        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/get-account/${action.payload.user.id}`, method: 'GET'  });
         
         if (status === 200) {
             return ;
