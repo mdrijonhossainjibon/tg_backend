@@ -10,9 +10,7 @@ const tasks = [
   { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', url: 'file_0' },
   { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', url: 'file_2' },
   { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', url: 'file_1' },
-  { title: 'Crypto Rahi', description: 'Follow the channel', url: 'file_3' },
-  { title: 'Game Status', description: 'Follow the channel', url: 'file_4' },
-  { title: 'Invite friends', description: 'Share your referral link', url: 'file_32' },
+  { title: 'Crypto Rahi', description: 'Follow the channel', url: 'file_3' }
 ];
 
 const TaskSteps: React.FC = () => {
@@ -21,7 +19,7 @@ const TaskSteps: React.FC = () => {
   const [loading, setLoading] = useState(false); // Loading state
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText('https://example.com/referral');
+    navigator.clipboard.writeText('https://t.me/RR_Supporters_bot?startapp=ID4GOZMER7002&hash=67122d36c49c9f754a084bbe');
     message.success('Referral link copied!');
   };
 
