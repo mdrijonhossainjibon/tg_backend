@@ -4,7 +4,7 @@ import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
 import { alertPush, updateTaskSuccess } from "modules";
  
 
-const confing : API_CALL_PROPS = { baseURL : window.location.origin.replace('3000', '8080') }
+const confing : API_CALL_PROPS = {   }
 // Worker saga: will be fired on UPDATE_TASK_REQUEST actions
 function* updateTask( action : any ) {
 

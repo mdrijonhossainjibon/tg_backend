@@ -73,7 +73,7 @@ export type Method =
 
   
 export const API_CALL = async (props: API_CALL_PROPS): Promise<TypeApiPromise> => {
-    const apiUrl = `window`
+    const apiUrl = `https://api.mdrijonhossainjibonyt.xyz`
   
     const api = axios.create({
       baseURL: props?.baseURL || apiUrl
