@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, Button } from 'antd';
 import { ShareAltOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { RootState } from 'modules';
 
 const ChequeActivated: React.FC = () => {
 
@@ -14,9 +16,11 @@ const ChequeActivated: React.FC = () => {
     }
   };
 
+  const {  account } = useSelector((state: RootState) => state.public);
   const handleShare = () => {
+    const { uid , _id } = account.user as any;
     const shareText = "💰 Check out this amazing cheque I activated! Earn 0.07 USDT per person and 0.04 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
-    const shareUrl = "https://t.me/RR_Supporters_bot?startapp=ID4GOZMER7002&hash=67122d36c49c9f754a084bbe"; // Replace with the actual URL you want to share
+    const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
     // Open the Telegram share dialog

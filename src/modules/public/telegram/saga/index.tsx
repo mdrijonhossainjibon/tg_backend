@@ -44,9 +44,8 @@ function* addAccount(action: any) {
 
         const { response, status }  = yield call(API_CALL, { ...confing, url: `/create-account`, method: 'POST', body : action.payload });
         
-        if (status === 200) {
+        if (status === 200 ||status === 201) {
             yield put(addAccountSuccess(response.user));
-            yield put(alertPush({ message: [ response?.message as string ] , type : 'message' , status : 'success'}))
             return ;
         }
         yield put(alertPush({ message: [ response?.message as string ] }))
