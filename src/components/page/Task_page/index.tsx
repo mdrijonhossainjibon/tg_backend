@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Steps, Button, Typography, Divider, Image, message, Spin } from 'antd';
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
@@ -17,6 +18,7 @@ const TaskSteps: React.FC = () => {
   const [current, setCurrent] = useState(0); // Track the current step
   const [isActivated, setIsActivated] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state
+  const history= useHistory();
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText('https://t.me/RR_Supporters_bot?startapp=ID4GOZMER7002&hash=67122d36c49c9f754a084bbe');
@@ -27,6 +29,7 @@ const TaskSteps: React.FC = () => {
     if (current === tasks.length - 1) { // Check if all tasks are completed
       setIsActivated(true);
       message.success('Task activated successfully!');
+      history.push('/reword_success')
     } else {
       message.error('Complete all tasks before activating!');
     }

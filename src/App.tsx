@@ -7,7 +7,7 @@ import { PublicRoute } from "Routes";
 
 
 const Task_page = lazy(() => import("components/page/Task_page"));
-
+const ChequeActivated = lazy(() => import("components/page/ChequeActivated"));
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
       <AuthContextProvider>
       <Switch>
       <PublicRoute exact path="/" component={ Task_page as any } />
+      <PublicRoute exact path="/reword_success" component={ ChequeActivated as any } />
       </Switch>
       </AuthContextProvider>
       </Suspense>
