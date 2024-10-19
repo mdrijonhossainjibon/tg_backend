@@ -23,8 +23,11 @@ const ChequeActivated: React.FC = () => {
     const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
-    // Open the Telegram share dialog
-    window.open(telegramShareUrl, '_blank');
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.openTelegramLink(telegramShareUrl, '_blank');
+    } else {
+      console.error('Telegram WebApp not available');
+    }
   };
 
   return (
