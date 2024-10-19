@@ -1,4 +1,4 @@
-import { ADD_TASK_FAILURE, ADD_TASK_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
+import { ADD_TASK_FAILURE, ADD_TASK_SUCCESS, GET_ACCOUNT_REQUEST, GET_ACCOUNT_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
 import { TaskActions, TasksState } from "./type";
 
 
@@ -45,11 +45,11 @@ const initialStatetasks: TasksState = {
         { title: 'Multi Earnings BD Channel', description: 'Follow the channel', path: 'file_5', url: 'cmultiearningsbd' }
       ],
     error: null,
-    loading: false
-
+    loading: false,
+    user : null
 };
 
-export const tasksReducer = (state = initialStatetasks, action: TaskActions): TasksState => {
+export const tasksReducer = (state = initialStatetasks, action: any): TasksState => {
     switch (action.type) {
         case ADD_TASK_SUCCESS:
             return {
@@ -82,6 +82,12 @@ export const tasksReducer = (state = initialStatetasks, action: TaskActions): Ta
                 loading: false,
                 error: action.payload.message,
             };
+            case GET_ACCOUNT_REQUEST:
+                return {
+                     ...state, loading: true, error: null 
+                    };   
+                    case GET_ACCOUNT_SUCCESS:
+                        return { ...state, loading: false, user: action.payload };
         default:
             return state;
     }

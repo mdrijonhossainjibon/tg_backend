@@ -1,11 +1,11 @@
 import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { lazy, Suspense, useEffect } from "react";
-import { Redirect, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Redirect, BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
 import { Routes } from "constants/routes";
 import { PublicRoute } from "Routes";
-import { useDispatch } from "react-redux";
-import { getAccountRequest, setQueryParams } from "modules";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccountRequest, RootState, setQueryParams } from "modules";
 
 
 interface User {
@@ -33,8 +33,8 @@ function App() {
 
   const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
- 
-  
+  const history = useHistory();
+  const { user } = useSelector((state: RootState) => state.public.tasks);
   useEffect(() => {
     if (window.Telegram) {
       const urlEncodedString = window.Telegram.WebApp.initData;
@@ -60,6 +60,11 @@ function App() {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      history.push('/reword_success')
+    }
+  }, [user])
 
   return (
     <Router>

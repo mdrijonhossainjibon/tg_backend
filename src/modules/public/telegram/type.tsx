@@ -25,6 +25,7 @@ export interface Task {
     tasks: Task[];
     error: string | null;
     loading: boolean; // Add loading state
+    user : any
 }
 
   
