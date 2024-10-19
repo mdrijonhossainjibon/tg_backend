@@ -26,10 +26,7 @@ const TaskSteps: React.FC = () => {
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://t.me/RR_Supporters_bot?startapp=${start_param}&hash=${hash}`);
-    message.success('Referral link copied!');
-  };
+  
 
   
 
@@ -70,16 +67,7 @@ useEffect(() =>{
           <Text type="secondary">≈ 0.07 $</Text>
         </div>
 
-        {/* Referral Link */}
-        <Button
-          type="primary"
-          shape="round"
-          icon={<CopyOutlined />}
-          className="mb-5"
-          onClick={handleCopyLink}
-        >
-          Get referral link
-        </Button>
+         
 
         <Divider />
 
@@ -119,6 +107,7 @@ useEffect(() =>{
           type="primary"
           className="mt-2 w-full"
           onClick={handleActivate}
+          disabled={ tasks.length  >= current}
           // Disable if already activated
         >
            Activate 

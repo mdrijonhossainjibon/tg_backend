@@ -1,4 +1,4 @@
-import { ADD_TASK_REQUEST, ADD_TASK_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS , UPDATE_TASK_FAILURE } from "./constants";
+import { ADD_TASK_REQUEST, ADD_TASK_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS , UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST } from "./constants";
 import { QueryParams } from "./reducer";
 import { AddTaskSuccessResponse,   UpdateTaskSuccessResponse } from "./type";
 
@@ -26,3 +26,8 @@ export const updatedREQUEST = (payload  : any) =>({
     payload  
 });
  
+
+export const getAccountRequest = (payload : any ) => ({
+    type: GET_ACCOUNT_REQUEST,
+    payload 
+  });

@@ -5,7 +5,7 @@ import { AuthProvider as AuthContextProvider } from "context";
 import { Routes } from "constants/routes";
 import { PublicRoute } from "Routes";
 import { useDispatch } from "react-redux";
-import { setQueryParams } from "modules";
+import { getAccountRequest, setQueryParams } from "modules";
 
 
 interface User {
@@ -56,6 +56,7 @@ function App() {
 
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
+      dispatch(getAccountRequest(queryParams))
     }
   }, [dispatch]);
 
