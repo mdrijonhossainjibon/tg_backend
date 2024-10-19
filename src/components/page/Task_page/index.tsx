@@ -8,10 +8,10 @@ const { Title, Text } = Typography;
 
 // Sample data for tasks
 const tasks = [
-  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' },
-  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' },
-  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' },
-  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' }
+  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' , url : 'https://t.me/Nur6432' },
+  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' , url : 'https://t.me/OnlineEarning24RIYAD' },
+  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' , url : 'https://t.me/mdrijonhossainjibon_airdrop'},
+  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' , url : 'https://t.me/OnlineEarning24RIYAD'}
 ];
 
 const TaskSteps: React.FC = () => {
