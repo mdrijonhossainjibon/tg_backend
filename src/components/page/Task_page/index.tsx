@@ -39,8 +39,14 @@ useEffect(() =>{
 
   const completeStep = () => {
     if (current < tasks.length - 0) {
-      window.open(`https://t.me/${tasks[current].url}`, '_blank');
-      dispatch(updatedREQUEST({ task : tasks[ current  ] , user }))
+       
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
+        dispatch(updatedREQUEST({ task : tasks[ current  ] , user }))
+      } else {
+        console.error('Telegram WebApp not available');
+      }
+      
        
     } 
   };
