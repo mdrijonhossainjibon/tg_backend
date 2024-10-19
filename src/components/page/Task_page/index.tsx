@@ -3,7 +3,7 @@ import { Card, Steps, Button, Typography, Divider, Image, message, Spin } from '
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { alertPush, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
+import { addAccountRequest, alertPush, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
@@ -22,6 +22,7 @@ const TaskSteps: React.FC = () => {
   const handleActivate = () => {
     if (tasks.length  <= current) {
       dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
+      dispatch(addAccountRequest({ start_param , user , hash }));
       history.push('/reword_success')
     }
   };
@@ -106,8 +107,7 @@ useEffect(() =>{
         <Button
           type="primary"
           className="mt-2 w-full"
-          onClick={handleActivate}
-          disabled={ tasks.length  >= current}
+          onClick={ handleActivate }
           // Disable if already activated
         >
            Activate 
