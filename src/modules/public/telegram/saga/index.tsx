@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST } from "../constants";
+import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST } from "../constants";
 import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
 import { alertPush, updateTaskSuccess } from "modules";
 
@@ -23,18 +23,22 @@ function* updateTask(action: any) {
 function* fetchAccount(action: any) {
     try {
 
-        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/get-account`, method: 'POST', params: { id: action.payload.user.id } });
-        console.log(response)
+        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/get-account/${action.payload.id}`, method: 'GET'  });
+        
+        if (status === 200) {
+            return ;
+        }
+        yield put(alertPush({ message: [ response?.message as string ] }))
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
     }
 }
 
 
-function* putAccount(action: any) {
+function* addAccount(action: any) {
     try {
 
-        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/get-account`, method: 'POST', params: { id: action.payload.user.id } });
+        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/create-account`, method: 'POST', body : action.payload });
         console.log(response)
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
@@ -45,4 +49,5 @@ function* putAccount(action: any) {
 export function* rootTelegramsaga() {
     yield takeLatest(UPDATE_TASK_REQUEST, updateTask); // Listen for UPDATE_TASK_REQUEST and call updateTask
     yield takeLatest(GET_ACCOUNT_REQUEST, fetchAccount);
+    yield takeLatest(ADD_ACCOUNT_REQUEST, addAccount);
 }
