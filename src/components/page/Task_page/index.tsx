@@ -54,12 +54,10 @@ const TaskSteps: React.FC = () => {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
         if (isMobile) {
-          // Open the Telegram app on mobile
-          window.location.href = `tg://resolve?domain=${currentTask.url}`;
-        } else {
-          // Open Telegram channel in a new tab on desktop
-          window.open(telegrampath, '_blank');
-        }
+          window.location.href = `tg://resolve?domain=@your_channel_name`;
+          
+        } 
+        window.open(telegrampath, '_blank');
       }
     }, 1000); // Simulate loading time
   };
