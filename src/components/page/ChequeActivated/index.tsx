@@ -9,8 +9,9 @@ const ChequeActivated: React.FC = () => {
   const handleClose = () => {
     // Close the web app
     if (window.Telegram && window.Telegram.WebApp) {
+      
+      window.Telegram.WebApp.openTelegramLink('https://t.me/RR_Supporters_bot?start=welcome','_blank')
       window.Telegram.WebApp.close();
-
     } else {
       console.warn("Telegram WebApp API is not available.");
     }
