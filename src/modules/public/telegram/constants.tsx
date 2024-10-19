@@ -1,0 +1,2 @@
+ 
+export const SET_QUERY_PARAMS = 'SET_QUERY_PARAMS';

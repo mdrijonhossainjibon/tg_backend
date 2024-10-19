@@ -1,9 +1,11 @@
 import { Loading3QuartersOutlined } from "@ant-design/icons";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Redirect, BrowserRouter as Router, Switch } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
 import { Routes } from "constants/routes";
 import { PublicRoute } from "Routes";
+import { useDispatch } from "react-redux";
+import { setQueryParams } from "modules";
 
 
 interface User {
@@ -30,27 +32,32 @@ const ChequeActivated = lazy(() => import("components/page/ChequeActivated"));
 function App() {
 
   const queryParams: any = {};
+  const dispatch = useDispatch(); // Initialize dispatch
+ 
+  
+  useEffect(() => {
+    if (window.Telegram) {
+      const urlEncodedString = window.Telegram.WebApp.initData;
+      const decodedString = decodeURIComponent(urlEncodedString);
+      const queryParamsArray = decodedString.split('&');
 
-  if (window.Telegram) {
-    const urlEncodedString = window.Telegram.WebApp.initData;
-    const decodedString = decodeURIComponent(urlEncodedString);
-    const queryParamsArray = decodedString.split('&');
+      queryParamsArray.forEach(param => {
+        const [key, value] = param.split('=');
+        queryParams[key as keyof QueryParams] = value;
+      });
 
-    queryParamsArray.forEach(param => {
-      const [key, value] = param.split('=');
-      queryParams[key as keyof QueryParams] = value;
-    });
-
-    if (queryParams.user) {
-      try {
-        queryParams.user = JSON.parse(queryParams.user) as User;
-      } catch (error) {
-        console.error('Failed to parse user data:', error);
+      if (queryParams.user) {
+        try {
+          queryParams.user = JSON.parse(queryParams.user) as User;
+        } catch (error) {
+          console.error('Failed to parse user data:', error);
+        }
       }
-    }
 
-    console.log(queryParams);
-  }
+      // Dispatch the query params to Redux
+      dispatch(setQueryParams(queryParams));
+    }
+  }, [dispatch]);
 
 
   return (
