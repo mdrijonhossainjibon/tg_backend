@@ -39,7 +39,7 @@ export const telegramReducer = (state = initialState, action: any) => {
 const initialStatetasks: TasksState = {
     tasks:  [
         { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0', url: 'Nur6432' },
-        { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2', url: 'OnlineEarning24RIYAD' },
+        //{ title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2', url: 'OnlineEarning24RIYAD' },
         { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1', url: 'mdrijonhossainjibon_airdrop' },
         { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3', url: 'rahicrypto' }
       ],
