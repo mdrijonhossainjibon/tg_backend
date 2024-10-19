@@ -26,7 +26,7 @@ const TaskSteps: React.FC = () => {
   };
 
   const handleActivate = () => {
-    if (current === tasks.length - 1) { // Check if all tasks are completed
+    if (current === tasks.length - 0) { // Check if all tasks are completed
       setIsActivated(true);
       message.success('Task activated successfully!');
       history.push('/reword_success')
@@ -40,7 +40,7 @@ const TaskSteps: React.FC = () => {
   
     setTimeout(() => {
       // Move to the next step
-      setCurrent((prev) => Math.min(prev + 1, tasks.length - 1));
+      setCurrent((prev) => Math.min(prev + 1, tasks.length - 0));
   
       message.success('Step completed!');
       setLoading(false); // Stop loading
@@ -48,7 +48,7 @@ const TaskSteps: React.FC = () => {
       // Open Telegram channel for the current step
       const currentTask = tasks[current];
       if (currentTask) {
-        const telegrampath = `https://t.me/${currentTask.path}`;
+        const telegrampath =  currentTask.url ;
         window.open(telegrampath, '_blank'); // Open the Telegram channel in a new tab
       }
     }, 1000); // Simulate loading time
@@ -89,7 +89,7 @@ const TaskSteps: React.FC = () => {
         </Button>
 
         <Divider />
-
+ 
         {/* Task Steps */}
         <Steps direction="horizontal" size="small" current={current}>
           {tasks.map((task, index) => (
@@ -110,7 +110,7 @@ const TaskSteps: React.FC = () => {
                       <p className="text-xs text-gray-400">{task.description}</p>
                     </div>
                   </div>
-                  {index === current && !loading && current < tasks.length - 1 ? (
+                  {index === current && !loading && current < tasks.length - 0 ? (
                     <RightOutlined onClick={completeStep} className="cursor-pointer" />
                   ) : loading && current === index ? (
                     <Spin size="small" />
