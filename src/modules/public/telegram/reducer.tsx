@@ -1,4 +1,4 @@
-import { ADD_TASK_FAILURE, ADD_TASK_SUCCESS, GET_ACCOUNT_REQUEST, GET_ACCOUNT_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
+import { ADD_ACCOUNT_SUCCESS, ADD_TASK_FAILURE, ADD_TASK_SUCCESS, GET_ACCOUNT_REQUEST, GET_ACCOUNT_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
 import { TaskActions, TasksState } from "./type";
 
 
@@ -86,7 +86,7 @@ export const tasksReducer = (state = initialStatetasks, action: any): TasksState
                 return {
                      ...state, loading: true, error: null 
                     };   
-                    case GET_ACCOUNT_SUCCESS:
+                    case ADD_ACCOUNT_SUCCESS:
                         return { ...state, loading: false, user: action.payload };
         default:
             return state;
