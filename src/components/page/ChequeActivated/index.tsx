@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card, Button } from 'antd';
 import { ShareAltOutlined } from '@ant-design/icons';
- 
+
 const ChequeActivated: React.FC = () => {
 
   const handleClose = () => {
     // Close the web app
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.close();
-      
+
     } else {
       console.warn("Telegram WebApp API is not available.");
     }
@@ -54,8 +54,8 @@ const ChequeActivated: React.FC = () => {
                 className="w-8 md:w-10 mr-2"
               />
               <div>
-                <h3 className="text-lg md:text-xl font-bold">0.5 USDT</h3>
-                <p className="text-gray-400 text-sm md:text-base">≈ 0.50 $</p>
+                <h3 className="text-lg md:text-xl font-bold">0.07 USDT</h3>
+                <p className="text-gray-400 text-sm md:text-base">≈ 0.07 $</p>
               </div>
             </div>
           </div>
@@ -69,26 +69,26 @@ const ChequeActivated: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-xs md:text-sm text-gray-400">Per one user</p>
-              <p className="font-semibold text-base md:text-lg">0.125 USDT</p>
+              <p className="font-semibold text-base md:text-lg">0.04 USDT</p>
             </div>
             <div>
-              <p className="text-xs md:text-sm text-gray-400">≈ 0.125 $</p>
+              <p className="text-xs md:text-sm text-gray-400">≈ 0.04 $</p>
             </div>
           </div>
         </div>
 
         {/* Cheque Link & Share Buttons */}
-        <div className=" flex justify-center gap-1 " style={ { alignItems : 'flex-end'}}>
-          
-          <Button  className="flex items-center w-full"  type="default"  style={{ color: '#722ed1', borderColor: '#722ed1', marginTop: '8px' }}onClick={ handleShare }>
-          <ShareAltOutlined />
+        <div className=" flex justify-center gap-1 " style={{ alignItems: 'flex-end' }}>
+
+          <Button className="flex items-center w-full" type="default" style={{ color: '#722ed1', borderColor: '#722ed1', marginTop: '8px' }} onClick={handleShare}>
+            <ShareAltOutlined />
             Share
           </Button>
-           {/* Close Button */}
-        <Button className="bg-purple-500 text-white w-full" type="primary" onClick={ handleClose  }>  CLOSE </Button>
+          {/* Close Button */}
+          <Button className="bg-purple-500 text-white w-full" type="primary" onClick={handleClose}>  CLOSE </Button>
         </div>
 
-       
+
       </Card>
     </div>
   );

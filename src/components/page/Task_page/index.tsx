@@ -8,10 +8,10 @@ const { Title, Text } = Typography;
 
 // Sample data for tasks
 const tasks = [
-  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' , url : 'https://t.me/Nur6432' },
-  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' , url : 'https://t.me/OnlineEarning24RIYAD' },
-  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' , url : 'https://t.me/mdrijonhossainjibon_airdrop'},
-  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' , url : 'https://t.me/OnlineEarning24RIYAD'}
+  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' , url : 'Nur6432' },
+  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' , url : 'OnlineEarning24RIYAD' },
+  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' , url : 'mdrijonhossainjibon_airdrop'},
+  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' , url : 'rahicrypto'}
 ];
 
 const TaskSteps: React.FC = () => {
@@ -48,8 +48,18 @@ const TaskSteps: React.FC = () => {
       // Open Telegram channel for the current step
       const currentTask = tasks[current];
       if (currentTask) {
-        const telegrampath =  currentTask.url ;
-        window.open(telegrampath, '_blank'); // Open the Telegram channel in a new tab
+        const telegrampath = `https://t.me/${currentTask.url}`;
+  
+        // Detect if the user is on mobile or desktop
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+        if (isMobile) {
+          // Open the Telegram app on mobile
+          window.location.href = `tg://resolve?domain=${currentTask.url}`;
+        } else {
+          // Open Telegram channel in a new tab on desktop
+          window.open(telegrampath, '_blank');
+        }
       }
     }, 1000); // Simulate loading time
   };
@@ -73,8 +83,8 @@ const TaskSteps: React.FC = () => {
       >
         {/* Reward */}
         <div className="mb-5">
-          <Title level={3} className="m-0">0.02 USDT</Title>
-          <Text type="secondary">≈ 0.02 $</Text>
+          <Title level={3} className="m-0">0.07 USDT</Title>
+          <Text type="secondary">≈ 0.07 $</Text>
         </div>
 
         {/* Referral Link */}
