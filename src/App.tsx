@@ -33,7 +33,7 @@ function App() {
   const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
   
-  const { user } = useSelector((state: RootState) => state.public.account);
+  
   useEffect(() => {
     if (window.Telegram) {
       const urlEncodedString = window.Telegram.WebApp.initData;
@@ -67,7 +67,7 @@ function App() {
           <Switch>
             <PublicRoute exact path="/" component={Task_page as any} />
             <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
-            <Redirect to={ user ? '/reword_success' : '/'} />
+           
           </Switch>
         </AuthContextProvider>
       </Suspense>

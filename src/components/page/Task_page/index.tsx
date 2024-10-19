@@ -15,6 +15,7 @@ const TaskSteps: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch()
   const { hash, start_param , user } = useSelector((state: RootState) => state.public.telegram);
+  const { account } = useSelector((state: RootState) => state.public);
   const { tasks, loading , error  } = useSelector((state: RootState) => state.public.tasks);
   const [current, setCurrent] = useState(0); // Track the current step
  
@@ -28,7 +29,11 @@ const TaskSteps: React.FC = () => {
   };
 
   
-
+useEffect(() =>{
+  if (account.user) {
+       history.push('/reword_success')
+  }
+} ,[ account ])
   
 
 
