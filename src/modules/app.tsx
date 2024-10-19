@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
-import { alertReducer, telegramReducer } from "./public";
+import { alertReducer, tasksReducer, telegramReducer } from "./public";
 
 export const publicReducer = combineReducers(
     { 
-        alerts : alertReducer , telegram: telegramReducer 
+        alerts : alertReducer , telegram: telegramReducer ,
+        tasks : tasksReducer
 
     });

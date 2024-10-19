@@ -1,67 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Steps, Button, Typography, Divider, Image, message, Spin } from 'antd';
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertPush, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
 
-// Sample data for tasks
-const tasks = [
-  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' , url : 'Nur6432' },
-  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' , url : 'OnlineEarning24RIYAD' },
-  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' , url : 'mdrijonhossainjibon_airdrop'},
-  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' , url : 'rahicrypto'}
-];
-
 const TaskSteps: React.FC = () => {
+  
+   
+  
+  const history = useHistory();
+  const dispatch = useDispatch()
+  const { hash, start_param , user } = useSelector((state: RootState) => state.public.telegram);
+  const { tasks, loading , error  } = useSelector((state: RootState) => state.public.tasks);
   const [current, setCurrent] = useState(0); // Track the current step
-  const [isActivated, setIsActivated] = useState(false);
-  const [loading, setLoading] = useState(false); // Loading state
-  const history= useHistory();
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText('https://t.me/RR_Supporters_bot?startapp=ID4GOZMER7002&hash=67122d36c49c9f754a084bbe');
-    message.success('Referral link copied!');
-  };
+ 
 
   const handleActivate = () => {
-    if (current === tasks.length - 0) { // Check if all tasks are completed
-      setIsActivated(true);
-      message.success('Task activated successfully!');
+    if (tasks.length  <= current) {
+      dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
       history.push('/reword_success')
-    } else {
-      message.error('Complete all tasks before activating!');
     }
   };
 
-  const completeStep = () => {
-    setLoading(true); // Start loading
-  
-    setTimeout(() => {
-      // Move to the next step
-      setCurrent((prev) => Math.min(prev + 1, tasks.length - 0));
-  
-      message.success('Step completed!');
-      setLoading(false); // Stop loading
-  
-      // Open Telegram channel for the current step
-      const currentTask = tasks[current];
-      if (currentTask) {
-        const telegrampath = `https://t.me/${currentTask.url}`;
-  
-        // Detect if the user is on mobile or desktop
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
-        if (isMobile) {
-          window.location.href = `tg://resolve?domain=@your_channel_name`;
-          
-        } 
-        window.open(telegrampath, '_blank');
-      }
-    }, 1000); // Simulate loading time
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`https://t.me/RR_Supporters_bot?startapp=${start_param}&hash=${hash}`);
+    message.success('Referral link copied!');
   };
+
   
+
+
+  const completeStep = () => {
+    if (current < tasks.length - 0) {
+      window.open(`https://t.me/${tasks[current].url}`, '_blank');
+      dispatch(updatedREQUEST({ task : tasks[ current  ] , user }))
+       
+    } 
+  };
+
+useEffect(() =>{
+ if (error === null || error || error  === 'User is not in the channel.')  return;
+  setCurrent(current + 1)
+  
+}, [ error ])
 
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
@@ -97,7 +82,7 @@ const TaskSteps: React.FC = () => {
         </Button>
 
         <Divider />
- 
+
         {/* Task Steps */}
         <Steps direction="horizontal" size="small" current={current}>
           {tasks.map((task, index) => (
@@ -118,7 +103,7 @@ const TaskSteps: React.FC = () => {
                       <p className="text-xs text-gray-400">{task.description}</p>
                     </div>
                   </div>
-                  {index === current && !loading && current < tasks.length - 0 ? (
+                  {index === current && !loading && current < tasks.length ? (
                     <RightOutlined onClick={completeStep} className="cursor-pointer" />
                   ) : loading && current === index ? (
                     <Spin size="small" />
@@ -134,9 +119,9 @@ const TaskSteps: React.FC = () => {
           type="primary"
           className="mt-2 w-full"
           onClick={handleActivate}
-          disabled={isActivated} // Disable if already activated
+          // Disable if already activated
         >
-          {isActivated ? 'Activated' : 'Activate'}
+           Activate 
         </Button>
       </Card>
     </div>
