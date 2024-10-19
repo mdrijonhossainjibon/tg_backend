@@ -29,6 +29,9 @@ function* fetchAccount(action: any) {
             yield put(addAccountSuccess(response.user));
             return ;
         }
+         if (response?.message === 'User not found.') {
+            return;
+         }
         yield put(alertPush({ message: [ response?.message as string ] }))
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
@@ -39,8 +42,14 @@ function* fetchAccount(action: any) {
 function* addAccount(action: any) {
     try {
 
-        const { response, status }: TypeApiPromise = yield call(API_CALL, { ...confing, url: `/create-account`, method: 'POST', body : action.payload });
-        console.log(response)
+        const { response, status }  = yield call(API_CALL, { ...confing, url: `/create-account`, method: 'POST', body : action.payload });
+        
+        if (status === 200) {
+            yield put(addAccountSuccess(response.user));
+            yield put(alertPush({ message: [ response?.message as string ] , type : 'message' , status : 'success'}))
+            return ;
+        }
+        yield put(alertPush({ message: [ response?.message as string ] }))
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
     }
