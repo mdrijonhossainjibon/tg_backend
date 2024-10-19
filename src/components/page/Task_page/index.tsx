@@ -8,10 +8,10 @@ const { Title, Text } = Typography;
 
 // Sample data for tasks
 const tasks = [
-  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', url: 'file_0' },
-  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', url: 'file_2' },
-  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', url: 'file_1' },
-  { title: 'Crypto Rahi', description: 'Follow the channel', url: 'file_3' }
+  { title: 'Nur Islam Roman 💸🇧🇩', description: 'Follow the channel', path: 'file_0' },
+  { title: 'OnlineEarning24 RIYAD', description: 'Follow the channel', path: 'file_2' },
+  { title: 'Md Rijon Hossain Jibon || AIRDROP 🚀🪂', description: 'Follow the channel', path: 'file_1' },
+  { title: 'Crypto Rahi', description: 'Follow the channel', path: 'file_3' }
 ];
 
 const TaskSteps: React.FC = () => {
@@ -37,12 +37,23 @@ const TaskSteps: React.FC = () => {
 
   const completeStep = () => {
     setLoading(true); // Start loading
+  
     setTimeout(() => {
-      setCurrent((prev) => Math.min(prev + 1, tasks.length - 1)); // Move to the next step
+      // Move to the next step
+      setCurrent((prev) => Math.min(prev + 1, tasks.length - 1));
+  
       message.success('Step completed!');
       setLoading(false); // Stop loading
+  
+      // Open Telegram channel for the current step
+      const currentTask = tasks[current];
+      if (currentTask) {
+        const telegrampath = `https://t.me/${currentTask.path}`;
+        window.open(telegrampath, '_blank'); // Open the Telegram channel in a new tab
+      }
     }, 1000); // Simulate loading time
   };
+  
 
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
@@ -91,7 +102,7 @@ const TaskSteps: React.FC = () => {
                     <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-2">
                       <img
                         className="rounded-[24px]"
-                        src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/profile_photos/${task.url}.jpg`}
+                        src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/profile_photos/${task.path}.jpg`}
                       />
                     </div>
                     <div>
