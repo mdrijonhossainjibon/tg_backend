@@ -2,7 +2,6 @@ import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { lazy, Suspense, useEffect } from "react";
 import { Redirect, BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
-import { Routes } from "constants/routes";
 import { PublicRoute } from "Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccountRequest, RootState, setQueryParams } from "modules";
@@ -33,8 +32,8 @@ function App() {
 
   const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
-  const history = useHistory();
-  const { user } = useSelector((state: RootState) => state.public.tasks);
+  
+  const { user } = useSelector((state: RootState) => state.public.account);
   useEffect(() => {
     if (window.Telegram) {
       const urlEncodedString = window.Telegram.WebApp.initData;
@@ -59,12 +58,7 @@ function App() {
       dispatch(getAccountRequest(queryParams))
     }
   }, [dispatch]);
-
-  useEffect(() => {
-    if (user) {
-      history.push('/reword_success')
-    }
-  }, [user])
+ 
 
   return (
     <Router>
@@ -73,6 +67,7 @@ function App() {
           <Switch>
             <PublicRoute exact path="/" component={Task_page as any} />
             <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
+            <Redirect to={ user ? '/reword_success' : '/'} />
           </Switch>
         </AuthContextProvider>
       </Suspense>

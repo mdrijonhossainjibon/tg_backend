@@ -1,4 +1,4 @@
-import { ADD_ACCOUNT_SUCCESS, ADD_TASK_FAILURE, ADD_TASK_SUCCESS, GET_ACCOUNT_REQUEST, GET_ACCOUNT_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
+import { ADD_ACCOUNT_FAILURE, ADD_ACCOUNT_REQUEST, ADD_ACCOUNT_SUCCESS, ADD_TASK_FAILURE, ADD_TASK_SUCCESS, GET_ACCOUNT_FAILURE, GET_ACCOUNT_REQUEST, GET_ACCOUNT_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
 import { TaskActions, TasksState } from "./type";
 
 
@@ -45,8 +45,7 @@ const initialStatetasks: TasksState = {
         { title: 'Multi Earnings BD Channel', description: 'Follow the channel', path: 'file_5', url: 'cmultiearningsbd' }
       ],
     error: null,
-    loading: false,
-    user : null
+    loading: false
 };
 
 export const tasksReducer = (state = initialStatetasks, action: any): TasksState => {
@@ -82,12 +81,7 @@ export const tasksReducer = (state = initialStatetasks, action: any): TasksState
                 loading: false,
                 error: action.payload.message,
             };
-            case GET_ACCOUNT_REQUEST:
-                return {
-                     ...state, loading: true, error: null 
-                    };   
-                    case ADD_ACCOUNT_SUCCESS:
-                        return { ...state, loading: false, user: action.payload };
+           
         default:
             return state;
     }
@@ -95,3 +89,37 @@ export const tasksReducer = (state = initialStatetasks, action: any): TasksState
 
 
 
+
+
+ 
+  
+export interface AccountState {
+    user: User | null;
+    loading: boolean;
+    error: string | null;
+  }
+  
+  const accountInitialState: AccountState = {
+    user: null,
+    loading: false,
+    error: null,
+  };
+  
+  export const accountReducer = (state = accountInitialState, action: any): AccountState => {
+    switch (action.type) {
+      case ADD_ACCOUNT_REQUEST:
+      case GET_ACCOUNT_REQUEST:
+        return { ...state, loading: true, error: null };
+      case ADD_ACCOUNT_SUCCESS:
+        return { ...state, loading: false, user: action.payload };
+      case GET_ACCOUNT_SUCCESS:
+        return { ...state, loading: false, user: action.payload };
+      case ADD_ACCOUNT_FAILURE:
+      case GET_ACCOUNT_FAILURE:
+        return { ...state, loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+ 
+  

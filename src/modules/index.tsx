@@ -1,6 +1,6 @@
 
 import { combineReducers } from 'redux';
-import { AlertState, QueryParams, rootalertsaga, rootTelegramsaga, TasksState } from './public';
+import { AccountState, AlertState, QueryParams, rootalertsaga, rootTelegramsaga, TasksState } from './public';
 import { publicReducer } from './app';
 import { all, call } from 'redux-saga/effects';
  
@@ -20,7 +20,8 @@ export interface RootState {
     public: {
         alerts: AlertState; 
         telegram : QueryParams;
-        tasks : TasksState
+        tasks : TasksState;
+        account : AccountState
     };
     
 }
