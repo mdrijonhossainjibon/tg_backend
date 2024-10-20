@@ -18,6 +18,8 @@ const ChequeActivated: React.FC = () => {
   };
 
   const {  account } = useSelector((state: RootState) => state.public);
+
+  
   const handleShare = () => {
     const { uid , _id } = account.user as any;
     const shareText = "💰 Check out this amazing cheque I activated! Earn 0.07 USDT per person and 0.04 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";

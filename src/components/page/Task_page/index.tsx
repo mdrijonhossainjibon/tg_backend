@@ -24,11 +24,12 @@ const TaskSteps: React.FC = () => {
     if (tasks.length  <= current) {
       const data = localStorage.getItem('data')
       dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
-      dispatch(addAccountRequest({ start_param : start_param || data , user   }));
+      dispatch(addAccountRequest({ start_param : start_param  , user   }));
       history.push('/reword_success')
     }
   };
 
+  console.log(start_param)
   
 useEffect(() =>{
   if (account.user) {
