@@ -16,6 +16,8 @@ interface TelegramUser {
       hash: string;
     };
     close: () => void;
+    ready : ()  => void;
+    sendData : (web_app_data : string) => void;
     openTelegramLink: (url: string, target?: string) => void; 
   }
   
