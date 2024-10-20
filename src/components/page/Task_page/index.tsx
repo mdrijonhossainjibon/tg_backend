@@ -57,14 +57,7 @@ useEffect(() =>{
   
 }, [ error ])
 
-if (window.Telegram && window.Telegram.WebApp) {
  
-  window.Telegram.WebApp.ready();
-  window.Telegram.WebApp.sendData("Your data or message here");
-} else {
-  console.error('Telegram WebApp not available');
-}
-
 
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
