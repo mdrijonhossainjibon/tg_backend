@@ -80,8 +80,8 @@ useEffect(() =>{
       >
         {/* Reward */}
         <div className="mb-5">
-          <Title level={3} className="m-0">0.07 USDT</Title>
-          <Text type="secondary">≈ 0.07 $</Text>
+          <Title level={3} className="m-0">0.10 USDT</Title>
+          <Text type="secondary">≈ 0.10 $</Text>
         </div>
 
          

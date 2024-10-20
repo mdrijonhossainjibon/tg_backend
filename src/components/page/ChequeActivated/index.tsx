@@ -64,8 +64,8 @@ const ChequeActivated: React.FC = () => {
                 className="w-8 md:w-10 mr-2"
               />
               <div>
-                <h3 className="text-lg md:text-xl font-bold">0.07 USDT</h3>
-                <p className="text-gray-400 text-sm md:text-base">≈ 0.07 $</p>
+                <h3 className="text-lg md:text-xl font-bold">0.10 USDT</h3>
+                <p className="text-gray-400 text-sm md:text-base">≈ 0.10 $</p>
               </div>
             </div>
           </div>
@@ -79,10 +79,10 @@ const ChequeActivated: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-xs md:text-sm text-gray-400">Per one user</p>
-              <p className="font-semibold text-base md:text-lg">0.04 USDT</p>
+              <p className="font-semibold text-base md:text-lg">0.06 USDT</p>
             </div>
             <div>
-              <p className="text-xs md:text-sm text-gray-400">≈ 0.04 $</p>
+              <p className="text-xs md:text-sm text-gray-400">≈ 0.06 $</p>
             </div>
           </div>
         </div>
