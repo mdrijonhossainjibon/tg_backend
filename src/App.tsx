@@ -56,7 +56,7 @@ function App() {
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
       dispatch(getAccountRequest(queryParams))
-
+      localStorage.setItem('data', queryParams.start_param);
       
     }
   }, [dispatch , window.Telegram ]);

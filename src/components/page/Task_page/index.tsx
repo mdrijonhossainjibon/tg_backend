@@ -14,7 +14,7 @@ const TaskSteps: React.FC = () => {
   
   const history = useHistory();
   const dispatch = useDispatch()
-  const { hash, start_param , user } = useSelector((state: RootState) => state.public.telegram);
+  const {  start_param , user } = useSelector((state: RootState) => state.public.telegram);
   const { account } = useSelector((state: RootState) => state.public);
   const { tasks, loading , error  } = useSelector((state: RootState) => state.public.tasks);
   const [current, setCurrent] = useState(0); // Track the current step
@@ -22,8 +22,9 @@ const TaskSteps: React.FC = () => {
 
   const handleActivate = () => {
     if (tasks.length  <= current) {
+      const data = localStorage.getItem('data')
       dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
-      dispatch(addAccountRequest({ start_param , user , hash }));
+      dispatch(addAccountRequest({ start_param : start_param || data , user   }));
       history.push('/reword_success')
     }
   };
