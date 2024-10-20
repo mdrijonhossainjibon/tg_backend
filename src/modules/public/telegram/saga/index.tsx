@@ -4,8 +4,7 @@ import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
 import { addAccountSuccess, alertPush, getAccountRequest, updateTaskSuccess } from "modules";
 
 
-const confing: API_CALL_PROPS = {}
-// Worker saga: will be fired on UPDATE_TASK_REQUEST actions
+const confing: API_CALL_PROPS = {} 
 function* updateTask(action: any) {
 
 
