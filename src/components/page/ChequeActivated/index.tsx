@@ -22,7 +22,7 @@ const ChequeActivated: React.FC = () => {
   
   const handleShare = () => {
     const { uid , _id } = account.user as any;
-    const shareText = "💰 Check out this amazing cheque I activated! Earn 0.07 USDT per person and 0.04 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
+    const shareText = "💰 Check out this amazing cheque I activated! Earn 0.10 USDT per person and 0.06 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
     const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
