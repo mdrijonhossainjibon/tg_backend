@@ -22,7 +22,12 @@ function* updateTask(action: any) {
 
 function* fetchAccount(action: any) {
     try {
-
+       
+        if (!window.Telegram.WebApp.initDataUnsafe.user) {
+            yield put(alertPush({ message: ['Telegram WebApp not available'] , type : 'message' , status : 'error' }));
+            return;
+        }
+        
         const { response, status }  = yield call(API_CALL, { ...confing, url: `/get-account/${action.payload.user.id}`, method: 'GET'  });
         
         if (status === 200) {
