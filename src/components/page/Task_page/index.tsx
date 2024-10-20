@@ -35,7 +35,7 @@ useEffect(() =>{
   if (account.user) {
        history.push('/reword_success')
   }
-  dispatch(alertPush({ message : [start_param as string]}))
+  
 } ,[ account ])
   
 
