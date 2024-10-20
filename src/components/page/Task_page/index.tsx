@@ -21,6 +21,11 @@ const TaskSteps: React.FC = () => {
  
 
   const handleActivate = () => {
+
+     if (!window.Telegram.WebApp.initDataUnsafe.user) {
+        return dispatch(alertPush({ message: ['Telegram WebApp not available'] , type : 'message' , status : 'error' }));
+     }
+
     if (tasks.length  <= current) {
        
       dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
