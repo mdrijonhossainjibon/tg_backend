@@ -57,10 +57,12 @@ useEffect(() =>{
   
 }, [ error ])
 
-
-console.log(useSelector((state: RootState) => state.public.telegram))
-
-
+if (window.Telegram && window.Telegram.WebApp) {
+  
+  console.error( window.Telegram.WebApp);
+} else {
+  console.error('Telegram WebApp not available');
+}
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
       <Card
