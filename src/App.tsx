@@ -57,8 +57,9 @@ function App() {
       dispatch(setQueryParams(queryParams));
       dispatch(getAccountRequest(queryParams))
     }
-  }, [dispatch]);
+  }, [dispatch , window.Telegram ]);
  
+console.log(queryParams)
 
   return (
     <Router>
