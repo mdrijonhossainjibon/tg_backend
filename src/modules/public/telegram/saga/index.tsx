@@ -51,7 +51,7 @@ function* addAccount(action: any) {
         
         if (status === 200 ||status === 201) {
             yield put(addAccountSuccess(response.user));
-            yield put(getAccountRequest(window.Telegram.WebApp.initDataUnsafe.user.id));
+            yield put(getAccountRequest(action.payload.user.id));
             return ;
         }
         yield put(alertPush({ message: [ response?.message as string ] }))
