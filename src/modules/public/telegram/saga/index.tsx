@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST } from "../constants";
 import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
-import { addAccountSuccess, alertPush, updateTaskSuccess } from "modules";
+import { addAccountSuccess, alertPush, getAccountRequest, updateTaskSuccess } from "modules";
 
 
 const confing: API_CALL_PROPS = {}
@@ -27,6 +27,7 @@ function* fetchAccount(action: any) {
         
         if (status === 200) {
             yield put(addAccountSuccess(response.user));
+           
             return ;
         }
          if (response?.message === 'User not found.') {
@@ -46,6 +47,7 @@ function* addAccount(action: any) {
         
         if (status === 200 ||status === 201) {
             yield put(addAccountSuccess(response.user));
+            yield put(getAccountRequest( response));
             return ;
         }
         yield put(alertPush({ message: [ response?.message as string ] }))

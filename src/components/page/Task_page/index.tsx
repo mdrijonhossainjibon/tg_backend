@@ -25,7 +25,6 @@ const TaskSteps: React.FC = () => {
        
       dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
       dispatch(addAccountRequest({ start_param : start_param  , user   }));
-      history.push('/reword_success')
     }
   };
 
