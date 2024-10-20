@@ -1,7 +1,7 @@
-import { takeLatest, call, put } from "redux-saga/effects";
-import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST } from "../constants";
+import { takeLatest, call, put, delay } from "redux-saga/effects";
+import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST, GET_TASK_REQUEST } from "../constants";
 import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
-import { addAccountSuccess, alertPush, getAccountRequest, updateTaskSuccess } from "modules";
+import { addAccountSuccess, addTaskSuccess, alertPush, getAccountRequest, updateTaskSuccess } from "modules";
 
 
 const confing: API_CALL_PROPS = {} 
@@ -14,7 +14,7 @@ function* updateTask(action: any) {
         yield put(updateTaskSuccess(response?.result as any))
         return;
     }
-    yield put(alertPush({ message: [response?.message as string], type: 'message', status: 'error' }));
+    yield put(alertPush({ message: [response?.message as string], type: 'mobile' , confing : { } }));
     yield put({ type: UPDATE_TASK_FAILURE, payload: { message: response?.message as string } });
 }
 
@@ -51,6 +51,7 @@ function* addAccount(action: any) {
         
         if (status === 200 ||status === 201) {
             yield put(addAccountSuccess(response.user));
+            yield delay(5000)
             yield put(getAccountRequest(action.payload));
             return ;
         }
@@ -60,9 +61,16 @@ function* addAccount(action: any) {
     }
 }
 
+function * getTaskReques( ) {
+    const { response, status } : TypeApiPromise = yield call(API_CALL, { ...confing, url: `/channels` });
+    yield put(addTaskSuccess(response?.result as any))
+    console.log(response)
+}
+
 // Watcher saga
 export function* rootTelegramsaga() {
     yield takeLatest(UPDATE_TASK_REQUEST, updateTask); // Listen for UPDATE_TASK_REQUEST and call updateTask
     yield takeLatest(GET_ACCOUNT_REQUEST, fetchAccount);
     yield takeLatest(ADD_ACCOUNT_REQUEST, addAccount);
+    yield takeLatest(GET_TASK_REQUEST,  getTaskReques);
 }

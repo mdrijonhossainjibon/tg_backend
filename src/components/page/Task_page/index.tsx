@@ -3,7 +3,8 @@ import { Card, Steps, Button, Typography, Divider, Image, message, Spin } from '
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAccountRequest, alertPush, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
+import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
+import { Empty } from 'antd';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
@@ -23,7 +24,7 @@ const TaskSteps: React.FC = () => {
   const handleActivate = () => {
 
      if (!window.Telegram.WebApp.initDataUnsafe.user) {
-        return dispatch(alertPush({ message: ['Telegram WebApp not available'] , type : 'message' , status : 'error' }));
+        return dispatch(alertPush({ message: ['Telegram WebApp not available'] , type : 'message' , status : 'error' ,}));
      }
 
     if (tasks.length  <= current) {
@@ -39,7 +40,7 @@ useEffect(() =>{
   if (account.user) {
        history.push('/reword_success')
   }
-  
+  dispatch(getTaskRequest())
 } ,[ account ])
   
 
@@ -48,7 +49,7 @@ useEffect(() =>{
     if (current < tasks.length - 0) {
        
       if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
+        //window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
         dispatch(updatedREQUEST({ task : tasks[ current  ] , user }))
       } else {
         console.error('Telegram WebApp not available');
@@ -92,8 +93,10 @@ useEffect(() =>{
 
         <Divider />
 
+    { tasks.length > 0 ? null : <Empty  />}
         {/* Task Steps */}
-        <Steps direction="horizontal" size="small" current={current}>
+        <Steps  direction='vertical' size="small" current={current}>
+          
           {tasks.map((task, index) => (
             <Step
               key={index}
@@ -104,7 +107,7 @@ useEffect(() =>{
                     <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-2">
                       <img
                         className="rounded-[24px]"
-                        src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/profile_photos/${task.path}.jpg`}
+                        src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/${task.path}`}
                       />
                     </div>
                     <div>

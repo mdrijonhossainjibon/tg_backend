@@ -1,4 +1,5 @@
-import { ADD_TASK_REQUEST, ADD_TASK_SUCCESS, SET_QUERY_PARAMS, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS , UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST, ADD_ACCOUNT_SUCCESS } from "./constants";
+ 
+import { ADD_ACCOUNT_REQUEST, ADD_ACCOUNT_SUCCESS, ADD_TASK_SUCCESS, GET_ACCOUNT_REQUEST, GET_TASK_REQUEST, SET_QUERY_PARAMS, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
 import { QueryParams } from "./reducer";
 import { AddTaskSuccessResponse,   UpdateTaskSuccessResponse } from "./type";
 
@@ -11,10 +12,17 @@ export const setQueryParams = (queryParams: QueryParams) => {
   };
 };
 
-export const addTaskSuccess = (response: AddTaskSuccessResponse) => ({
-    type: ADD_TASK_SUCCESS,
-    payload: response,
+export const getTaskRequest = () => ({
+    type: GET_TASK_REQUEST
 });
+
+
+export const addTaskSuccess = (response: AddTaskSuccessResponse) => ({
+  type: ADD_TASK_SUCCESS  ,
+  payload: response,
+});
+
+
 
 export const updateTaskSuccess = (response: UpdateTaskSuccessResponse) => ({
     type: UPDATE_TASK_SUCCESS,

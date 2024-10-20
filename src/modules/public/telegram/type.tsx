@@ -1,4 +1,4 @@
-import { ADD_TASK_FAILURE, ADD_TASK_REQUEST, ADD_TASK_SUCCESS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
+import { ADD_TASK_FAILURE,   ADD_TASK_SUCCESS, UPDATE_TASK_FAILURE, UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS } from "./constants";
 
 // types.ts
 export interface Task {
@@ -29,7 +29,7 @@ export interface Task {
 
   
   export interface AddTaskRequestAction {
-    type: typeof ADD_TASK_REQUEST;
+    type: typeof UPDATE_TASK_SUCCESS;
     payload: Task;
   }
   
