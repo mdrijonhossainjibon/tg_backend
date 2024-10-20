@@ -22,7 +22,7 @@ const ChequeActivated: React.FC = () => {
   
   const handleShare = () => {
     const { uid , _id } = account.user as any;
-    const shareText = "💰 Check out this amazing cheque I activated! Earn 0.10 USDT per person and 0.02 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
+    const shareText = "💰 Check out this amazing cheque I activated! Earn 0.10 USDT per person and 0.035 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
     const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
     const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
 
@@ -79,10 +79,10 @@ const ChequeActivated: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-xs md:text-sm text-gray-400">Per one user</p>
-              <p className="font-semibold text-base md:text-lg">0.02 USDT</p>
+              <p className="font-semibold text-base md:text-lg">0.035 USDT</p>
             </div>
             <div>
-              <p className="text-xs md:text-sm text-gray-400">≈ 0.02 $</p>
+              <p className="text-xs md:text-sm text-gray-400">≈ 0.035 $</p>
             </div>
           </div>
         </div>
