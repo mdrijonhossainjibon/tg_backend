@@ -56,10 +56,12 @@ function App() {
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
       dispatch(getAccountRequest(queryParams))
+
+      
     }
   }, [dispatch , window.Telegram ]);
  
-console.log(queryParams)
+
 
   return (
     <Router>
