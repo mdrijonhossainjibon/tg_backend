@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import { PHone } from "./Phone";
 import LOGO from '../../../logo.svg';
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
  
@@ -25,6 +25,12 @@ const LoginPage  = () => {
     } ,[  dispatch  ])
   })
 
+
+  useEffect(() =>{
+    if (window.Telegram.WebApp.initDataUnsafe.user) {
+        history.push('/jobs')
+    }
+  }, [ history , window.Telegram])
 
   const handelOnFinished = (event : any)=>{
     //dispatch(signInRequest({ ...event , history }) as any)

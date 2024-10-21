@@ -60,13 +60,7 @@ function App() {
     }
   }, [dispatch, window.Telegram]);
  
-
-  useEffect(() =>{
-    if (window.Telegram.WebApp.initDataUnsafe.user) {
-        history.push('/task')
-    }
-  },[ queryParams , history ])
-
+ 
   return (
     <>
       <GoogleOAuthProvider clientId="109113138013-tv5kg8bh40tub6lgqi1tpm5jofvn2dis.apps.googleusercontent.com">
@@ -75,7 +69,7 @@ function App() {
             <AuthContextProvider>
               <Switch>
                 <PrivateRoute exact path="/" component={Task_page as any} />
-                <PublicRoute exact path="/task" component={Task_page as any} />
+                <PublicRoute exact path="/jobs" component={Task_page as any} />
                 <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
                 <PublicRoute exact path={ Routes.Login } component={ auth } />
                  <Redirect to='/task' />
