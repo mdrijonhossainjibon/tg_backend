@@ -32,7 +32,9 @@ const TaskSteps: React.FC = () => {
     if (account.user) {
       history.push('/reword_success');
     }
+    dispatch(addAccountRequest({ start_param, user }));
     dispatch(getTaskRequest());
+
   }, [account]);
 
   const completeStep = () => {
@@ -120,16 +122,7 @@ const TaskSteps: React.FC = () => {
         </Button>
       </Card>
 
-      {/* Loading Modal */}
-      <Modal
-        visible={taskLoading}
-        footer={null}
-        closable={false}
-        centered
-        bodyStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-      >
-        <Spin size="large" tip="Processing task..." />
-      </Modal>
+       
     </div>
   );
 };
