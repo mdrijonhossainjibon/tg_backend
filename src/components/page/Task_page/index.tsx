@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Steps, Button, Typography, Divider, Image, message, Spin, Empty, Modal } from 'antd';
-import { CopyOutlined, RightOutlined } from '@ant-design/icons';
+import { Card, Steps, Button, Typography, Divider, Image, Spin, Empty, Modal } from 'antd';
+import { RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST } from 'modules';
@@ -15,7 +15,7 @@ const TaskSteps: React.FC = () => {
   const { account } = useSelector((state: RootState) => state.public);
   const { tasks, loading, error } = useSelector((state: RootState) => state.public.tasks);
   const [current, setCurrent] = useState(0); // Track the current step
-  const [taskLoading, setTaskLoading] = useState(false); // Local loading state for task processing
+
 
   const handleActivate = () => {
     if (!window.Telegram.WebApp.initDataUnsafe.user) {
@@ -42,7 +42,7 @@ const TaskSteps: React.FC = () => {
         return dispatch(alertPush({ message: ['Task Unavailable'], type: 'mobile' }));
       }
 
-      setTaskLoading(true); // Set loading state before processing the task
+
       window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
       dispatch(updatedREQUEST({ task: tasks[current], user }));
     }
@@ -51,7 +51,7 @@ const TaskSteps: React.FC = () => {
   useEffect(() => {
     if (error === null || error || error === 'User is not in the channel.') return;
     setCurrent((prev) => prev + 1); // Increment current step on error
-    setTaskLoading(false); // Reset loading state when moving to the next step
+
   }, [error]);
 
   return (
@@ -79,7 +79,7 @@ const TaskSteps: React.FC = () => {
         <Divider />
 
         {tasks.length === 0 && <Empty />}
-        
+
         {/* Task Steps */}
         <Steps direction='vertical' size="small" current={current}>
           {tasks.map((task, index) => (
@@ -100,9 +100,9 @@ const TaskSteps: React.FC = () => {
                       <p className="text-xs text-gray-400">{task.description}</p>
                     </div>
                   </div>
-                  {index === current && !taskLoading && current < tasks.length ? (
+                  {index === current && !loading && current < tasks.length ? (
                     <RightOutlined onClick={completeStep} className="cursor-pointer" />
-                  ) : taskLoading && current === index ? (
+                  ) : loading && current === index ? (
                     <Spin size="small" />
                   ) : null}
                 </div>
@@ -117,11 +117,11 @@ const TaskSteps: React.FC = () => {
           className="mt-2 w-full"
           onClick={handleActivate}
         >
-          Activate 
+          Activate
         </Button>
       </Card>
 
-      
+
     </div>
   );
 };
