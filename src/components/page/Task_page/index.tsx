@@ -1,71 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Steps, Button, Typography, Divider, Image, message, Spin } from 'antd';
+import { Card, Steps, Button, Typography, Divider, Image, message, Spin, Empty, Modal } from 'antd';
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST, updateTaskSuccess } from 'modules';
-import { Empty } from 'antd';
+import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST } from 'modules';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
 
 const TaskSteps: React.FC = () => {
-  
-   
-  
   const history = useHistory();
-  const dispatch = useDispatch()
-  const {  start_param , user } = useSelector((state: RootState) => state.public.telegram);
+  const dispatch = useDispatch();
+  const { start_param, user } = useSelector((state: RootState) => state.public.telegram);
   const { account } = useSelector((state: RootState) => state.public);
-  const { tasks, loading , error  } = useSelector((state: RootState) => state.public.tasks);
+  const { tasks, loading, error } = useSelector((state: RootState) => state.public.tasks);
   const [current, setCurrent] = useState(0); // Track the current step
- 
+  const [taskLoading, setTaskLoading] = useState(false); // Local loading state for task processing
 
   const handleActivate = () => {
+    if (!window.Telegram.WebApp.initDataUnsafe.user) {
+      return dispatch(alertPush({ message: ['Telegram WebApp not available'], type: 'message', status: 'error' }));
+    }
 
-     if (!window.Telegram.WebApp.initDataUnsafe.user) {
-        return dispatch(alertPush({ message: ['Telegram WebApp not available'] , type : 'message' , status : 'error' ,}));
-     }
-
-    if (tasks.length  <= current) {
-       
-      dispatch(alertPush({ message : ['All steps completed!' ] , type : 'message'  , status : 'loading'}));
-      dispatch(addAccountRequest({ start_param : start_param  , user   }));
+    if (tasks.length <= current) {
+      dispatch(alertPush({ message: ['All steps completed!'], type: 'message', status: 'loading' }));
+      dispatch(addAccountRequest({ start_param, user }));
     }
   };
 
- 
-  
-useEffect(() =>{
-  if (account.user) {
-       history.push('/reword_success')
-  }
-  dispatch(getTaskRequest())
-} ,[ account ])
-  
-
+  useEffect(() => {
+    if (account.user) {
+      history.push('/reword_success');
+    }
+    dispatch(getTaskRequest());
+  }, [account]);
 
   const completeStep = () => {
-    if (current < tasks.length - 0) {
-       
-      if (window.Telegram && window.Telegram.WebApp) {
-         window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
-        dispatch(updatedREQUEST({ task : tasks[ current  ] , user }))
-      } else {
-        console.error('Telegram WebApp not available');
+    if (current < tasks.length) {
+      if (!window.Telegram.WebApp.initDataUnsafe.user) {
+        return dispatch(alertPush({ message: ['Task Unavailable'], type: 'mobile' }));
       }
-      
-       
-    } 
+
+      setTaskLoading(true); // Set loading state before processing the task
+      window.Telegram.WebApp.openTelegramLink(`https://t.me/${tasks[current].url}`, '_blank');
+      dispatch(updatedREQUEST({ task: tasks[current], user }));
+    }
   };
 
-useEffect(() =>{
- if (error === null || error || error  === 'User is not in the channel.')  return;
-  setCurrent(current + 1)
-  
-}, [ error ])
-
- 
+  useEffect(() => {
+    if (error === null || error || error === 'User is not in the channel.') return;
+    setCurrent((prev) => prev + 1); // Increment current step on error
+    setTaskLoading(false); // Reset loading state when moving to the next step
+  }, [error]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
@@ -89,14 +75,12 @@ useEffect(() =>{
           <Text type="secondary">≈ 0.10 $</Text>
         </div>
 
-         
-
         <Divider />
 
-    { tasks.length > 0 ? null : <Empty  />}
+        {tasks.length === 0 && <Empty />}
+        
         {/* Task Steps */}
-        <Steps  direction='vertical' size="small" current={current}>
-          
+        <Steps direction='vertical' size="small" current={current}>
           {tasks.map((task, index) => (
             <Step
               key={index}
@@ -115,9 +99,9 @@ useEffect(() =>{
                       <p className="text-xs text-gray-400">{task.description}</p>
                     </div>
                   </div>
-                  {index === current && !loading && current < tasks.length ? (
+                  {index === current && !taskLoading && current < tasks.length ? (
                     <RightOutlined onClick={completeStep} className="cursor-pointer" />
-                  ) : loading && current === index ? (
+                  ) : taskLoading && current === index ? (
                     <Spin size="small" />
                   ) : null}
                 </div>
@@ -130,12 +114,22 @@ useEffect(() =>{
         <Button
           type="primary"
           className="mt-2 w-full"
-          onClick={ handleActivate }
-          // Disable if already activated
+          onClick={handleActivate}
         >
-           Activate 
+          Activate 
         </Button>
       </Card>
+
+      {/* Loading Modal */}
+      <Modal
+        visible={taskLoading}
+        footer={null}
+        closable={false}
+        centered
+        bodyStyle={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Spin size="large" tip="Processing task..." />
+      </Modal>
     </div>
   );
 };

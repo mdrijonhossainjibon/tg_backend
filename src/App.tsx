@@ -2,10 +2,11 @@ import { Loading3QuartersOutlined } from "@ant-design/icons";
 import { lazy, Suspense, useEffect } from "react";
 import { Redirect, BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
-import { PublicRoute } from "Routes";
+import { PrivateRoute, PublicRoute } from "Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccountRequest, RootState, setQueryParams } from "modules";
-
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import { Routes } from "constants/routes";
 
 interface User {
   id: number;
@@ -27,13 +28,13 @@ interface QueryParams {
 
 const Task_page = lazy(() => import("components/page/Task_page"));
 const ChequeActivated = lazy(() => import("components/page/ChequeActivated"));
-
+const auth = lazy(() => import('components/page/auth'))
 function App() {
 
   const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
-  
-  
+  const history = useHistory()
+
   useEffect(() => {
     if (window.Telegram) {
       const urlEncodedString = window.Telegram.WebApp.initData;
@@ -55,26 +56,35 @@ function App() {
 
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
-      dispatch(getAccountRequest(queryParams))
-      
+       
     }
-  }, [dispatch , window.Telegram ]);
+  }, [dispatch, window.Telegram]);
  
 
- 
+  useEffect(() =>{
+    if (window.Telegram.WebApp.initDataUnsafe.user) {
+        history.push('/task')
+    }
+  },[ queryParams , history ])
 
   return (
-    <Router>
-      <Suspense fallback={<Loading3QuartersOutlined />}>
-        <AuthContextProvider>
-          <Switch>
-            <PublicRoute exact path="/" component={Task_page as any} />
-            <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
-           
-          </Switch>
-        </AuthContextProvider>
-      </Suspense>
-    </Router>
+    <>
+      <GoogleOAuthProvider clientId="109113138013-tv5kg8bh40tub6lgqi1tpm5jofvn2dis.apps.googleusercontent.com">
+        <Router>
+          <Suspense fallback={<Loading3QuartersOutlined />}>
+            <AuthContextProvider>
+              <Switch>
+                <PrivateRoute exact path="/" component={Task_page as any} />
+                <PublicRoute exact path="/task" component={Task_page as any} />
+                <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
+                <PublicRoute exact path={ Routes.Login } component={ auth } />
+                 <Redirect to='/task' />
+              </Switch>
+            </AuthContextProvider>
+          </Suspense>
+        </Router>
+      </GoogleOAuthProvider>
+    </>
   );
 }
 
