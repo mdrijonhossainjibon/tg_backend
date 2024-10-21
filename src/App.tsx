@@ -3,10 +3,11 @@ import { lazy, Suspense, useEffect } from "react";
 import { Redirect, BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
 import { PrivateRoute, PublicRoute } from "Routes";
-import { useDispatch, useSelector } from "react-redux";
-import { getAccountRequest, RootState, setQueryParams } from "modules";
+import { useDispatch } from "react-redux";
+import {   setQueryParams } from "modules";
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Routes } from "constants/routes";
+import MainLayout from "./components/MainLayout";
 
 interface User {
   id: number;
@@ -28,12 +29,15 @@ interface QueryParams {
 
 const Task_page = lazy(() => import("components/page/Task_page"));
 const ChequeActivated = lazy(() => import("components/page/ChequeActivated"));
-const auth = lazy(() => import('components/page/auth'))
+const auth = lazy(() => import('components/page/auth'));
+const TelegramUsers = lazy(() => import('components/page/telegram'));
+const ConfigurationsLayouts = lazy(() => import('components/page/configuration/ConfigurationsLayouts'));
+const OperationsLayout = lazy(() => import('components/page/operations/OperationsLayout'));
 function App() {
 
   const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
-  const history = useHistory()
+ 
 
   useEffect(() => {
     if (window.Telegram) {
@@ -56,24 +60,29 @@ function App() {
 
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
-       
+
     }
   }, [dispatch, window.Telegram]);
- 
- 
+
+
   return (
     <>
       <GoogleOAuthProvider clientId="109113138013-tv5kg8bh40tub6lgqi1tpm5jofvn2dis.apps.googleusercontent.com">
         <Router>
           <Suspense fallback={<Loading3QuartersOutlined />}>
             <AuthContextProvider>
-              <Switch>
-                <PrivateRoute exact path="/" component={Task_page as any} />
-                <PublicRoute exact path="/jobs" component={Task_page as any} />
-                <PublicRoute exact path="/reword_success" component={ChequeActivated as any} />
-                <PublicRoute exact path={ Routes.Login } component={ auth } />
-                 <Redirect to='/task' />
+              <MainLayout>  
+                <Switch>
+               
+                <PublicRoute exact path={Routes.Login} component={ auth } />
+                 <PublicRoute exact path={ Routes.Adjustments } component={ Task_page as any }/>
+                <PrivateRoute path={Routes.Users } component={ TelegramUsers } />
+                <PrivateRoute path={Routes.Configuration} component={ConfigurationsLayouts} />
+                <PrivateRoute path={Routes.Operations} component={ OperationsLayout } />
+                <Redirect to={  Routes.Users } />
+                
               </Switch>
+              </MainLayout>
             </AuthContextProvider>
           </Suspense>
         </Router>

@@ -7,6 +7,7 @@ import { useCallback, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { getAccountRequest } from "modules";
+import { Routes } from "constants/routes";
  
  
  
@@ -29,7 +30,7 @@ const LoginPage  = () => {
 
   useEffect(() =>{
     if (window.Telegram.WebApp.initDataUnsafe.user) {
-        history.push('/jobs');
+        history.push(Routes.Adjustments);
         dispatch(getAccountRequest({   user  : window.Telegram.WebApp.initDataUnsafe.user }));
          
     }
