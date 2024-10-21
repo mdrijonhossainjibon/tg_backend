@@ -3,7 +3,7 @@ import { Card, Steps, Button, Typography, Divider, Image, message, Spin, Empty, 
 import { CopyOutlined, RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAccountRequest, alertPush, getAccountRequest, getTaskRequest, RootState, updatedREQUEST } from 'modules';
+import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST } from 'modules';
 
 const { Step } = Steps;
 const { Title, Text } = Typography;
@@ -32,10 +32,9 @@ const TaskSteps: React.FC = () => {
     if (account.user) {
       history.push('/reword_success');
     }
-    dispatch(getAccountRequest({   user  }));
     dispatch(getTaskRequest());
 
-  }, [ account ]);
+  }, [account]);
 
   const completeStep = () => {
     if (current < tasks.length) {
@@ -122,7 +121,7 @@ const TaskSteps: React.FC = () => {
         </Button>
       </Card>
 
-       
+      
     </div>
   );
 };

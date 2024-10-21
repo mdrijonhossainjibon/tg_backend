@@ -6,6 +6,7 @@ import LOGO from '../../../logo.svg';
 import { useCallback, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
+import { getAccountRequest } from "modules";
  
  
  
@@ -28,7 +29,9 @@ const LoginPage  = () => {
 
   useEffect(() =>{
     if (window.Telegram.WebApp.initDataUnsafe.user) {
-        history.push('/jobs')  
+        history.push('/jobs');
+        dispatch(getAccountRequest({   user  : window.Telegram.WebApp.initDataUnsafe.user }));
+         
     }
   }, [ history , window.Telegram])
 
