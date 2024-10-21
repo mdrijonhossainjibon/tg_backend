@@ -28,7 +28,7 @@ const LoginPage  = () => {
 
   useEffect(() =>{
     if (window.Telegram.WebApp.initDataUnsafe.user) {
-        history.push('/jobs')
+        history.push('/jobs')  
     }
   }, [ history , window.Telegram])
 
