@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { accountReducer, alertReducer, tasksReducer, TelegramReducer, telegramReducer, telegramUsersReducer } from "./public";
+import { accountReducer, alertReducer, changeColorThemeReducer, tasksReducer, TelegramReducer, telegramReducer, telegramUsersReducer } from "./public";
 import { userListReducer } from "./users";
 import { authReducer } from "./auth";
 
@@ -10,7 +10,7 @@ export const publicReducer = combineReducers(
         account: accountReducer,
         Telegram: TelegramReducer,
         telegramUsers: telegramUsersReducer,
-       
+        colorTheme : changeColorThemeReducer,
     });
 
 

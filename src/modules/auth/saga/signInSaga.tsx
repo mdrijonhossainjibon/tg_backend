@@ -60,6 +60,7 @@ export function* siginUser(action: SignInRequestAction) {
 		 
 			return;
 		}
+		if (response?.message?.error === 'CSRF token is missing')  return;
 
 		yield put(alertPush({ message: [response?.message?.error] }));
 		yield put(signInFailure(response?.message?.error));

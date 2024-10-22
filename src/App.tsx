@@ -1,17 +1,17 @@
-
-import { lazy, Suspense, useEffect, useMemo  } from "react";
+import { lazy, Suspense, useEffect, useMemo } from "react";
 import { Redirect, BrowserRouter as Router, Switch } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
 import { PrivateRoute, PublicRoute } from "Routes";
-import { useDispatch } from "react-redux";
-import { setQueryParams } from "modules";
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentColorTheme, setQueryParams } from "modules";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Routes } from "constants/routes";
 import MainLayout from "./components/MainLayout";
 import { LoadingSpinner } from "components/LoadingSpinner";
-import './App.css'
+import './App.css';
 import { ConfigProvider, theme } from "antd";
  
+
 interface User {
   id: number;
   first_name: string;
@@ -36,12 +36,12 @@ const auth = lazy(() => import('components/page/auth'));
 const TelegramUsers = lazy(() => import('components/page/telegram'));
 const ConfigurationsLayouts = lazy(() => import('components/page/configuration/ConfigurationsLayouts'));
 const OperationsLayout = lazy(() => import('components/page/operations/OperationsLayout'));
-function App() {
 
+function App() {
   const dispatch = useDispatch(); // Initialize dispatch
   const queryParams = useMemo(() => ({} as any), []);
-   
 
+  const isLightTheme = useSelector(selectCurrentColorTheme);
 
   useEffect(() => {
     if (window.Telegram) {
@@ -56,7 +56,7 @@ function App() {
 
       if (queryParams.user) {
         try {
-          queryParams.user = JSON.parse(queryParams.user) as User;
+          queryParams.user = JSON.parse(queryParams.user);
         } catch (error) {
           console.error('Failed to parse user data:', error);
         }
@@ -65,9 +65,24 @@ function App() {
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
     }
-  }, [dispatch, queryParams]); // Memoized queryParams won't change on every render
+  }, [dispatch, queryParams]);
 
- 
+  // Memoize theme configuration based on a light/dark condition (e.g., from user preference or state)
+  const themeConfig = useMemo(() => {
+
+    return {
+      token: {
+
+        colorText: '#fff',
+
+        colorBgLayout: isLightTheme === 'light' ? '#f0f2f5' : '#001529', // Light or dark background layout
+        colorBgContainer: isLightTheme === 'light' ? '#ffffff' : '#001529', // Light or dark background for containers
+      },
+      algorithm: isLightTheme === 'light' ? theme.defaultAlgorithm : theme.darkAlgorithm,
+    };
+
+  }, [isLightTheme]);
+
 
 
   return (
@@ -76,17 +91,9 @@ function App() {
         <Router>
           <Suspense fallback={<LoadingSpinner />}>
             <AuthContextProvider>
-              <ConfigProvider theme={{
-                token: {
-                  colorPrimary: '#ff0000', // Customize primary color
-                  colorBgLayout: '#001529', // Custom background color for the layout
-                  colorBgContainer: '#001529',
-                }, 
-                 algorithm : theme.darkAlgorithm
-              }} >
+              <ConfigProvider theme={themeConfig}>
                 <MainLayout>
                   <Switch>
-
                     <PublicRoute exact path={Routes.Login} component={auth} />
                     <PublicRoute exact path={Routes.Adjustments} component={ChequeActivated as any} />
                     <PublicRoute exact path={Routes.Dashboard} component={Task_page as any} />
@@ -94,12 +101,9 @@ function App() {
                     <PrivateRoute path={Routes.Configuration} component={ConfigurationsLayouts} />
                     <PrivateRoute path={Routes.Operations} component={OperationsLayout} />
                     <Redirect to={Routes.Users} />
-
                   </Switch>
                 </MainLayout>
-
               </ConfigProvider>
-
             </AuthContextProvider>
           </Suspense>
         </Router>

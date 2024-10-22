@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Steps, Button, Typography, Divider, Image, Spin, Empty } from 'antd';
+import { Card, Steps, Button, Typography, Divider,  Spin, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST } from 'modules';
-
+import { Image } from 'antd-mobile';
 const { Step } = Steps;
 const { Title, Text } = Typography;
 
@@ -54,10 +54,12 @@ const TaskSteps: React.FC = () => {
 
   }, [error]);
 
+  
+
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
       <Card
-        className="rounded-lg shadow-lg text-center bg-gradient-to-r w-full h-full"
+        className="rounded-lg shadow-lg text-center bg-gradient-to-r "
         title={
           <div className="flex justify-center items-center">
             <Image

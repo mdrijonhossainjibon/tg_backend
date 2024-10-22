@@ -9,6 +9,8 @@ import { useAuthContext } from "context";
 
 import './index.css';
 import { applyTheme, getTheme, isDarkMode, toggleTheme } from "utils/themeHelper";
+import { useDispatch } from "react-redux";
+import { changeColorTheme } from "modules";
 
 
 
@@ -24,10 +26,10 @@ export default function MainLayout({ children }: Props) {
   const location = useLocation();
   const history = useHistory();
   const selectUsers: any = {}
-  const { authorized } = useAuthContext();
+  const { authorized , logout  } = useAuthContext();
   const [selectedLanguage, setSelectedLanguage] = useState<string>('English');  // State for selected language
   const [darkMode, setDarkMode] = useState(false);
-
+  const dispatch = useDispatch()
   useEffect(() => {
     applyTheme()
     setDarkMode(isDarkMode());
@@ -38,6 +40,8 @@ export default function MainLayout({ children }: Props) {
     // Toggle the theme and update state
     toggleTheme()
     setDarkMode(checked);
+    dispatch(changeColorTheme(getTheme()) as any)
+     
   };
 
   const menuItems = [
@@ -105,7 +109,7 @@ export default function MainLayout({ children }: Props) {
               type="primary"
               danger
               icon={<PoweroffOutlined />}
-
+              onClick={ logout }
               className="setter-main-container-header-logout"
             >
               Logout
@@ -123,9 +127,10 @@ export default function MainLayout({ children }: Props) {
         </Header>
       )}
       <Layout>{children}</Layout>
-      <Footer className="setter-main-footer">
+     { window.location.hostname === '/setter/internal/dashboard' ? <Footer className={"setter-main-footer"}>
         Powered by <a href={`${window.location}`}>Md Rijon Hossain Jibon YT</a>
       </Footer>
+      :  null}
     </Layout>
   );
 }

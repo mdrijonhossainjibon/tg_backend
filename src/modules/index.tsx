@@ -1,6 +1,6 @@
 
 import { combineReducers } from 'redux';
-import { AccountState, AlertState, QueryParams, rootalertsaga, rootTelegramsaga, TasksState, TelegramRootSaga, TelegramState, TelegramUsersState } from './public';
+import { AccountState, AlertState, ColorThemeState, QueryParams, rootalertsaga, rootTelegramsaga, TasksState, TelegramRootSaga, TelegramState, TelegramUsersState } from './public';
 import { publicReducer, usersReducer } from './app';
 import { all, call } from 'redux-saga/effects';
 import { AuthState, rootAuthSaga } from './auth';
@@ -29,6 +29,7 @@ export interface RootState {
         account: AccountState;
         telegramUsers: TelegramUsersState;
         Telegram: TelegramState;
+        colorTheme : ColorThemeState
     };
     users: {
         auth: AuthState;

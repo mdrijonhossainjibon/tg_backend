@@ -9,72 +9,72 @@ import { useDispatch } from "react-redux";
 import { alertPush, getAccountRequest } from "modules";
 import { Routes } from "constants/routes";
 import { useAuthContext } from "context";
-import { changeWebsiteTitle  } from "helpers";
- 
- 
- 
+import { changeWebsiteTitle } from "helpers";
 
-const LoginPage  = () => {
- const [form] = Form.useForm();
 
- const { t } = useTranslation();
-  
-  const { loginUser , signInUser } = useAuthContext()
+
+
+const LoginPage = () => {
+  const [form] = Form.useForm();
+
+  const { t } = useTranslation();
+
+  const { loginUser, signInUser } = useAuthContext()
   const dispatch = useDispatch()
   const history = useHistory();
-  
 
-  const loginAuth =  useGoogleLogin({
-    onSuccess : useCallback(({ access_token } : { access_token : string }) =>{
-     loginUser( { hash : access_token ,  history  })
-    } ,[ loginUser  , history  ])
+
+  const loginAuth = useGoogleLogin({
+    onSuccess: useCallback(({ access_token }: { access_token: string }) => {
+      loginUser({ hash: access_token, history })
+    }, [loginUser, history])
   })
 
- useEffect(() =>{
-  
-  if (history.location.pathname === '/setter/auth/login') {
-    signInUser()
-  }
- } ,[ ])
- 
- 
+  useEffect(() => {
 
-  useEffect(() =>{
-    if (window.Telegram.WebApp.initDataUnsafe.user) {
-        history.push(Routes.Adjustments);
-        dispatch(getAccountRequest({   user  : window.Telegram.WebApp.initDataUnsafe.user }));
-         
+    if (history.location.pathname === '/setter/auth/login') {
+      signInUser()
     }
-    changeWebsiteTitle(['Admin Panel' , 'Sign In to Setter!']);
-     //// eslint-disable-next-line
-  }, [ dispatch , history  ])
+  }, [history.location.pathname , signInUser])
 
-  const handelOnFinished = (event : any)=>{
+
+
+  useEffect(() => {
+    if (window.Telegram.WebApp.initDataUnsafe.user) {
+      history.push(Routes.Adjustments);
+      dispatch(getAccountRequest({ user: window.Telegram.WebApp.initDataUnsafe.user }));
+
+    }
+    changeWebsiteTitle(['Admin Panel', 'Sign In to Setter!']);
+    //// eslint-disable-next-line
+  }, [dispatch, history])
+
+  const handelOnFinished = (event: any) => {
     const emailPattern = /^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,}$/;
     const usernamePattern = /^[a-zA-Z0-9]+$/;
-      if (!event.email) {
-        return dispatch(alertPush({ message: ['Email is required'], type: 'message' , status : 'error'}));
-      }
-      if (!emailPattern.test(event.email) && !usernamePattern.test(event.email)) {
-        return dispatch(alertPush({  message: ['Invalid email or username format. Please enter a valid email (e.g., example@gmail.com) or a valid username (e.g., @username)'], type: 'message' , status : 'error'}));
-      }
-      if (!event.password) {
-        return dispatch(alertPush({ message: ['Password is required'], type: 'message' , status : 'error'}));
-      }
-       
-      loginUser({ ...event , history })
+    if (!event.email) {
+      return dispatch(alertPush({ message: ['Email is required'], type: 'message', status: 'error' }));
+    }
+    if (!emailPattern.test(event.email) && !usernamePattern.test(event.email)) {
+      return dispatch(alertPush({ message: ['Invalid email or username format. Please enter a valid email (e.g., example@gmail.com) or a valid username (e.g., @username)'], type: 'message', status: 'error' }));
+    }
+    if (!event.password) {
+      return dispatch(alertPush({ message: ['Password is required'], type: 'message', status: 'error' }));
+    }
+
+    loginUser({ ...event, history })
   }
- return (
+  return (
     <>
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-transparent">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block" alt={LOGO } src={ LOGO } />
-                <img className="dark:hidden"  alt={LOGO} src= { LOGO }/>
+                <img className="hidden dark:block" alt={LOGO} src={LOGO} />
+                <img className="dark:hidden" alt={LOGO} src={LOGO} />
               </Link>
-             <PHone />
+              <PHone />
             </div>
           </div>
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
@@ -83,7 +83,7 @@ const LoginPage  = () => {
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign In to Setter!
               </h2>
-              <Form form={form}  onFinish={ handelOnFinished }>
+              <Form form={form} onFinish={handelOnFinished}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -91,7 +91,7 @@ const LoginPage  = () => {
                   <div className="relative">
                     <Form.Item name="email"        >
                       <input
-                        type='text' 
+                        type='text'
                         placeholder="Enter your email or username"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -122,7 +122,7 @@ const LoginPage  = () => {
                   <div className="relative">
                     <Form.Item name="password">
                       <input
-                        type="password"  
+                        type="password"
                         placeholder={t("setter.login.form.ph.password")}
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
@@ -150,20 +150,20 @@ const LoginPage  = () => {
                     </span>
                   </div>
                 </div>
-                 
-                   <div className="mb-5">
-                    <Input  
-                      type="submit"
-                      value="Sign In"
-                      className="w-full cursor-pointer rounded-lg border first:bg-blue-500 focus:bg-blue-500 hover:bg-blue-500  border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 bg-blue-500"
-                    />
-                  </div>  
-                 
+
+                <div className="mb-5">
+                  <Input
+                    type="submit"
+                    value="Sign In"
+                    className="w-full cursor-pointer rounded-lg border first:bg-blue-500 focus:bg-blue-500 hover:bg-blue-500  border-primary bg-primary p-4 text-white transition hover:bg-opacity-90 bg-blue-500"
+                  />
+                </div>
+
 
 
 
               </Form>
-              <button onClick={ loginAuth as any}  className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+              <button onClick={loginAuth as any} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                 <span>
                   <svg
                     width="20"
@@ -197,9 +197,11 @@ const LoginPage  = () => {
                     </defs>
                   </svg>
                 </span>
-                Sign in with Google
+
+                <span className="dark:text-white"> Sign in with Google</span>
+
               </button>
-              
+
 
             </div>
           </div>

@@ -1,47 +1,64 @@
-import React from 'react';
-import { Card, Button } from 'antd';
-import { ShareAltOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
-import { RootState } from 'modules';
+import React, { useEffect, useState } from 'react';
+import { Card,  Button, Typography } from 'antd';
+import {   ShareAltOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addAccountRequest, alertPush, getTaskRequest, RootState, updatedREQUEST } from 'modules';
+import { Image } from 'antd-mobile';
+ 
+const { Title, Text } = Typography;
 
-const ChequeActivated: React.FC = () => {
+const TaskSteps: React.FC = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { start_param, user } = useSelector((state: RootState) => state.public.telegram);
+  const { account } = useSelector((state: RootState) => state.public);
+  
+
 
   const handleClose = () => {
     // Close the web app
-    if (window.Telegram && window.Telegram.WebApp) {
+    if (window.Telegram && window.Telegram.WebApp.initDataUnsafe.user) {
       
       window.Telegram.WebApp.openTelegramLink('https://t.me/RR_Supporters_bot?start=welcome','_blank')
       window.Telegram.WebApp.close();
     } else {
-      console.warn("Telegram WebApp API is not available.");
+      dispatch(alertPush({ message : ['Telegram WebApp API is not available.'] , type : 'mobile'   }))
     }
   };
 
-  const {  account } = useSelector((state: RootState) => state.public);
 
-  
+
   const handleShare = () => {
-    const { uid , _id } = account.user as any;
-    const shareText = "💰 Check out this amazing cheque I activated! Earn 0.10 USDT per person and 0.035 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
-    const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
-    const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+   
 
-    if (window.Telegram && window.Telegram.WebApp) {
+    if (window.Telegram && window.Telegram.WebApp.initDataUnsafe.user) {
+      const { uid , _id } = account.user as any;
+      const shareText = "💰 Check out this amazing cheque I activated! Earn 0.10 USDT per person and 0.035 USDT from each referral. 💵 Reward pool: $5000! 🎉\n\n🔥 Don't miss out on this exclusive opportunity! 📈 Start earning today and invite your friends for extra rewards! 🚀";
+      const shareUrl = `https://t.me/RR_Supporters_bot?startapp=${ uid }&hash=${_id}`; // Replace with the actual URL you want to share
+      const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
       window.Telegram.WebApp.openTelegramLink(telegramShareUrl, '_blank');
     } else {
-      console.error('Telegram WebApp not available');
+      dispatch(alertPush({ message : ['Telegram WebApp API is not available.'] , type : 'mobile'   }))
     }
   };
 
+
   return (
-    <div className="max-w-md mx-auto p-4 md:p-6">
+    <div className="w-full h-screen flex items-center justify-center p-4">
       <Card
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        }}
+        className="rounded-lg shadow-lg text-center bg-gradient-to-r   sm:w-[420px] w-full  h-full"
+        title={
+          <div className="flex justify-center items-center">
+            <Image
+              src={require('../../../e0a5b301-193d-42b3-97f0-86bed876ebc8.jpg')}
+              width={24}
+              height={24}
+              className="w-10 mr-2 rounded-[10px]"
+            />
+            <Title level={4} className="m-1">Cheque</Title>
+          </div>
+        }
       >
         {/* Eyes Emoji */}
         <div className="flex justify-center items-center mb-3 md:mb-4">
@@ -63,7 +80,7 @@ const ChequeActivated: React.FC = () => {
                 alt="Coin Icon"
                 className="w-8 md:w-10 mr-2"
               />
-              <div>
+              <div  >
                 <h3 className="text-lg md:text-xl font-bold">0.10 USDT</h3>
                 <p className="text-gray-400 text-sm md:text-base">≈ 0.10 $</p>
               </div>
@@ -71,7 +88,7 @@ const ChequeActivated: React.FC = () => {
           </div>
 
           {/* Share and Rewards */}
-          <div className="border-t border-b border-gray-300 py-1 md:py-2 mb-3 md:mb-4">
+          <div className="border-t border-b border-red-700 py-1 md:py-2 mb-3 md:mb-4">
             <p className="text-center text-xs md:text-sm text-gray-400">SHARE AND GET REWARDS</p>
           </div>
 
@@ -88,20 +105,22 @@ const ChequeActivated: React.FC = () => {
         </div>
 
         {/* Cheque Link & Share Buttons */}
-        <div className=" flex justify-center gap-1 " style={{ alignItems: 'flex-end' }}>
+        <div className=" flex justify-center gap-2 bottom-0 relative  sm:top-[21em] top-[13em]  " style={{ alignItems: 'flex-end' }}>
 
-          <Button className="flex items-center w-full" type="default" style={{ color: '#722ed1', borderColor: '#722ed1', marginTop: '8px' }} onClick={handleShare}>
+          <Button className="flex items-center w-full" type="default" style={{ color: '#722ed1', borderColor: '#722ed1', marginTop: '8px' }} onClick={ handleShare} >
             <ShareAltOutlined />
             Share
           </Button>
           {/* Close Button */}
-          <Button className="bg-purple-500 text-white w-full" type="primary" onClick={handleClose}>  CLOSE </Button>
+          <Button className="bg-purple-500 text-white w-full" type="primary" onClick={ handleClose } >  CLOSE </Button>
         </div>
 
 
       </Card>
+
+
     </div>
   );
 };
 
-export default ChequeActivated;
+export default TaskSteps;

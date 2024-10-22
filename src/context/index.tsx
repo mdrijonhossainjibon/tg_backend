@@ -1,3 +1,4 @@
+import { rmCsrfToken } from 'helpers';
 import { RootState, signInRequest, SignInRequestAction, signInUserRequest } from 'modules';
 import React, { createContext, useContext, useState, ReactNode, FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,12 +47,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setUid(null);
     setRole(null);
+    rmCsrfToken()
   };
 
   const  loginUser = (payload : SignInRequestAction['payload']) => dispatch(signInRequest(payload) as any)
   const  signInUser = () => dispatch(signInUserRequest())
-
-  console.log(authorized)
+ 
 
   useEffect(() => {
     // Here you can add logic to initialize the context with existing user info
