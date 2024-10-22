@@ -22,7 +22,7 @@ const LoginPage  = () => {
   const { loginUser , signInUser } = useAuthContext()
   const dispatch = useDispatch()
   const history = useHistory();
- 
+  
 
   const loginAuth =  useGoogleLogin({
     onSuccess : useCallback(({ access_token } : { access_token : string }) =>{
@@ -30,7 +30,14 @@ const LoginPage  = () => {
     } ,[ loginUser  , history  ])
   })
 
-  signInUser()
+ useEffect(() =>{
+  
+  if (history.location.pathname === '/setter/auth/login') {
+    signInUser()
+  }
+ } ,[ ])
+ 
+ 
 
   useEffect(() =>{
     if (window.Telegram.WebApp.initDataUnsafe.user) {
