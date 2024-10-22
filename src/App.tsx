@@ -73,7 +73,7 @@ function App() {
     return {
       token: {
 
-        colorText: '#fff',
+       
 
         colorBgLayout: isLightTheme === 'light' ? '#f0f2f5' : '#001529', // Light or dark background layout
         colorBgContainer: isLightTheme === 'light' ? '#ffffff' : '#001529', // Light or dark background for containers
