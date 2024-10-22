@@ -18,8 +18,7 @@ export function* signInSaga(action: SignInRequestAction) {
 
 
 		const { response, status }: TypeApiPromise = yield call(API_CALL, { ...signConfig, url: '/identity/sessions', method: 'POST', body: action.payload })
-		
-		console.log(response)
+		 
 
 		if (response) {
 			if ( status === 200 && response.result && response.result.user) {
@@ -30,13 +29,7 @@ export function* signInSaga(action: SignInRequestAction) {
 	 
 				return;
 			}
-	
-			 
-			if (response?.message?.error === 'identity.session.ipdetect') {
-				localStorage.setItem('countdown' , '120')
-				return  action.payload.history.push('/email/verify');
-	
-			}
+	 
 			   
 			if (response.message  && response.message.error) {
 				yield put(alertPush({ message: [response?.message?.error] }));
@@ -46,7 +39,7 @@ export function* signInSaga(action: SignInRequestAction) {
 			}
 	
 		}
-
+		yield put(alertPush({ message: [response?.message?.error] }));
 
 	} catch (error: any) {
 		yield put(alertPush({ message: [error.message] }));
@@ -68,7 +61,7 @@ export function* siginUser(action: SignInRequestAction) {
 			return;
 		}
 
-		 
+		yield put(alertPush({ message: [response?.message?.error] }));
 		yield put(signInFailure(response?.message?.error));
 	} catch (error) {
 

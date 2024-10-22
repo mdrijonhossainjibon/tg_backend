@@ -1,5 +1,5 @@
 import { takeLatest, call, put, delay } from "redux-saga/effects";
-import { UPDATE_TASK_REQUEST, UPDATE_TASK_SUCCESS, UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST, GET_TASK_REQUEST } from "../constants";
+import { UPDATE_TASK_REQUEST,  UPDATE_TASK_FAILURE, GET_ACCOUNT_REQUEST, ADD_ACCOUNT_REQUEST, GET_TASK_REQUEST } from "../constants";
 import { API_CALL, API_CALL_PROPS, TypeApiPromise } from "API_CALL";
 import { addAccountSuccess, addTaskSuccess, alertPush, getAccountRequest, updateTaskSuccess } from "modules";
 
@@ -37,6 +37,10 @@ function* fetchAccount(action: any) {
          if (response?.message === 'User not found.') {
             return;
          }
+         if (response && response.message && response.message.error) {
+            yield put(alertPush({ message : [ response.message.error]}));
+            return;
+        }
         yield put(alertPush({ message: [ response?.message as string ] }))
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
@@ -55,6 +59,10 @@ function* addAccount(action: any) {
             yield put(getAccountRequest(action.payload));
             return ;
         }
+        if (response && response.message && response.message.error) {
+            yield put(alertPush({ message : [ response.message.error]}));
+            return;
+        }
         yield put(alertPush({ message: [ response?.message as string ] }))
     } catch (error: any) {
         yield put(alertPush({ message: [error.message] }))
@@ -63,8 +71,14 @@ function* addAccount(action: any) {
 
 function * getTaskReques( ) {
     const { response, status } : TypeApiPromise = yield call(API_CALL, { ...confing, url: `/channels` });
-    yield put(addTaskSuccess(response?.result as any))
-    console.log(response)
+    if (response && response.message && status === 200) {
+        yield put(addTaskSuccess(response?.result as any))
+    }
+    if (response && response.message && response.message.error) {
+        yield put(alertPush({ message : [ response.message.error]}));
+        return;
+    }
+  
 }
 
 // Watcher saga

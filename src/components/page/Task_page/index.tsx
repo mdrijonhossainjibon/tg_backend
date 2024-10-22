@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Steps, Button, Typography, Divider, Image, Spin, Empty, Modal } from 'antd';
+import { Card, Steps, Button, Typography, Divider, Image, Spin, Empty } from 'antd';
 import { RightOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const TaskSteps: React.FC = () => {
     }
     dispatch(getTaskRequest());
 
-  }, [account]);
+  }, [ dispatch , history , account ]);
 
   const completeStep = () => {
     if (current < tasks.length) {
@@ -82,7 +82,7 @@ const TaskSteps: React.FC = () => {
 
         {/* Task Steps */}
         <Steps direction='vertical' size="small" current={current}>
-          {tasks.map((task, index) => (
+          {tasks.slice(0,8).map((task, index) => (
             <Step
               key={index}
               className="w-full"
@@ -90,10 +90,7 @@ const TaskSteps: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mr-2">
-                      <img
-                        className="rounded-[24px]"
-                        src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/${task.path}`}
-                      />
+                      <Image  className="rounded-full"  src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/${task.path}`} />
                     </div>
                     <div>
                       <p className="font-semibold">{task.title}</p>

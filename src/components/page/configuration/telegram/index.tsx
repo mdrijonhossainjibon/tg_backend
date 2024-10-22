@@ -99,7 +99,11 @@ export default function Telegram_Config() {
             <Input
               placeholder="Enter channel username"
               value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={(e) => {
+                const username = e.target.value.startsWith('https://t.me/') ? '@' + e.target.value.split('https://t.me/')[1] : e.target.value;
+                setNewUsername(username);
+              
+              }}
               onPressEnter={addChannelUsername} // Add when pressing Enter
             />
             <Button

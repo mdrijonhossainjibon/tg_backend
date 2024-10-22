@@ -6,8 +6,10 @@ import LOGO from '../../../logo.svg';
 import { useCallback, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
-import { getAccountRequest } from "modules";
+import { alertPush, getAccountRequest } from "modules";
 import { Routes } from "constants/routes";
+import { useAuthContext } from "context";
+import { changeWebsiteTitle  } from "helpers";
  
  
  
@@ -17,16 +19,18 @@ const LoginPage  = () => {
 
  const { t } = useTranslation();
   
-  //const { loginUser } = useAuthContext()
+  const { loginUser , signInUser } = useAuthContext()
   const dispatch = useDispatch()
-  const history = useHistory()
+  const history = useHistory();
+ 
+
   const loginAuth =  useGoogleLogin({
     onSuccess : useCallback(({ access_token } : { access_token : string }) =>{
-  
-       ///dispatch( signInRequest( { hash : access_token ,  history  }) as any)
-    } ,[  dispatch  ])
+     loginUser( { hash : access_token ,  history  })
+    } ,[ loginUser  , history  ])
   })
 
+  signInUser()
 
   useEffect(() =>{
     if (window.Telegram.WebApp.initDataUnsafe.user) {
@@ -34,10 +38,24 @@ const LoginPage  = () => {
         dispatch(getAccountRequest({   user  : window.Telegram.WebApp.initDataUnsafe.user }));
          
     }
-  }, [ history , window.Telegram])
+    changeWebsiteTitle(['Admin Panel' , 'Sign In to Setter!']);
+     //// eslint-disable-next-line
+  }, [ dispatch , history  ])
 
   const handelOnFinished = (event : any)=>{
-    //dispatch(signInRequest({ ...event , history }) as any)
+    const emailPattern = /^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,}$/;
+    const usernamePattern = /^[a-zA-Z0-9]+$/;
+      if (!event.email) {
+        return dispatch(alertPush({ message: ['Email is required'], type: 'message' , status : 'error'}));
+      }
+      if (!emailPattern.test(event.email) && !usernamePattern.test(event.email)) {
+        return dispatch(alertPush({  message: ['Invalid email or username format. Please enter a valid email (e.g., example@gmail.com) or a valid username (e.g., @username)'], type: 'message' , status : 'error'}));
+      }
+      if (!event.password) {
+        return dispatch(alertPush({ message: ['Password is required'], type: 'message' , status : 'error'}));
+      }
+       
+      loginUser({ ...event , history })
   }
  return (
     <>
@@ -66,8 +84,8 @@ const LoginPage  = () => {
                   <div className="relative">
                     <Form.Item name="email"        >
                       <input
-                        type="email"  
-                        placeholder="Enter your email"
+                        type='text' 
+                        placeholder="Enter your email or username"
                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                     </Form.Item>
@@ -174,14 +192,7 @@ const LoginPage  = () => {
                 </span>
                 Sign in with Google
               </button>
-              <div className="mt-6 text-center">
-                <p>
-                  Don’t have an account?{' '}
-                  <Link to="https://www.binance.com/en/my/dashboard" className="text-primary">
-                    Sign Up
-                  </Link>
-                </p>
-              </div>
+              
 
             </div>
           </div>

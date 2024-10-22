@@ -1,45 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Layout, Menu, Space, Switch, Dropdown } from "antd";
-import { ApiOutlined, PoweroffOutlined, SwapOutlined, TeamOutlined, SettingOutlined, DashboardOutlined, FireOutlined, BulbOutlined, CommentOutlined, SoundOutlined, WalletOutlined, GiftOutlined, AndroidOutlined, GlobalOutlined } from "@ant-design/icons";
+import { PoweroffOutlined, SwapOutlined, TeamOutlined, SettingOutlined, DashboardOutlined, GlobalOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 import { Routes } from "constants/routes";
 import { MenuInfo } from "rc-menu/lib/interface";
 import { useAuthContext } from "context";
-import { useDispatch, useSelector } from "react-redux";
-import './index.css';
 
- 
+import './index.css';
+import { applyTheme, getTheme, isDarkMode, toggleTheme } from "utils/themeHelper";
+
+
+
 
 interface Props {
   children: React.ReactNode;
 }
- 
+
 
 export default function MainLayout({ children }: Props) {
   const { Footer, Header } = Layout;
   const { t, i18n } = useTranslation();  // Access i18n for language change
   const location = useLocation();
   const history = useHistory();
-  const selectUsers: any  = {}
-  const { authorized  } = useAuthContext();
-  const dispatch = useDispatch();
-  const [  selectedLanguage, setSelectedLanguage  ] = useState<string>('English');  // State for selected language
+  const selectUsers: any = {}
+  const { authorized } = useAuthContext();
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('English');  // State for selected language
+  const [darkMode, setDarkMode] = useState(false);
 
- 
- 
+  useEffect(() => {
+    applyTheme()
+    setDarkMode(isDarkMode());
+  }, [])
+
+
+  const handleToggle = (checked: boolean) => {
+    // Toggle the theme and update state
+    toggleTheme()
+    setDarkMode(checked);
+  };
 
   const menuItems = [
     { key: Routes.Dashboard, icon: <DashboardOutlined />, label: t("setter.header.tabs.dashboard") },
     { key: Routes.Users, icon: <TeamOutlined />, label: t("setter.header.tabs.users") },
     { key: Routes.Operations, icon: <SwapOutlined className="h-6" />, label: t("setter.header.tabs.operations") },
     { key: Routes.Configuration, icon: <SettingOutlined />, label: t("setter.header.tabs.configuration") },
-    { key: Routes.Restrictions, icon: <ApiOutlined />, label: t("setter.header.tabs.devops") },
-    { key: Routes.chat, icon: <CommentOutlined />, label: t("setter.header.tabs.chats") },
-    { key: "/", icon: <SoundOutlined />, label: t("setter.header.tabs.notification") },
-    { key: Routes.Wallets, icon: <WalletOutlined />, label: t("setter.header.tabs.wallet") },
-    { key: "/", icon: <GiftOutlined />, label: t("setter.header.tabs.redpack") },
-    { key: "/", icon: <AndroidOutlined />, label: t("setter.header.tabs.android") },
+
   ];
 
   const menuItemOnClick = (e: MenuInfo) => {
@@ -75,19 +81,18 @@ export default function MainLayout({ children }: Props) {
       <Menu.Item key="zh" onClick={() => handleLanguageChange("zh", "中文")}>
         中文 (Chinese)
       </Menu.Item>
-      {/* Add more languages here as needed */}
     </Menu>
   );
 
 
   return (
     <Layout className="setter-main-container">
-      { true && (
-        <Header className="setter-main-container-header">
+      {authorized && (
+        <Header className="setter-main-container-header   bg-white  dark:bg-[#001529]">
           <Avatar src={selectUsers?.avater || "https://api.dicebear.com/7.x/miniavs/svg?seed=8"} size="large" className="h-10 w-10 right-11" />
 
           <Menu
-            theme="dark"
+            theme={  getTheme()}
             className="setter-main-container-header-nav"
             mode='horizontal'
             onClick={menuItemOnClick}
@@ -100,7 +105,7 @@ export default function MainLayout({ children }: Props) {
               type="primary"
               danger
               icon={<PoweroffOutlined />}
-               
+
               className="setter-main-container-header-logout"
             >
               Logout
@@ -109,12 +114,10 @@ export default function MainLayout({ children }: Props) {
               <Button icon={<GlobalOutlined />} > {selectedLanguage} </Button>
             </Dropdown>
             <Switch
-              checkedChildren={<FireOutlined />}
-              unCheckedChildren={<BulbOutlined />}
-              // Implement theme change logic
-              onChange={(v) => {
-                // setTheme(v ? "" : "dark");
-              }}
+              checkedChildren="🌙"
+              unCheckedChildren="☀️"
+              value={darkMode}
+              onChange={handleToggle}
             />
           </Space>
         </Header>

@@ -143,14 +143,14 @@ export default function PendingWithdrawals() {
   const changeFilter = (filter: any | undefined) => {
     const params = { ...filter };
     const queryString = qs.stringify(params);
-    history .push({ search: queryString });
+    history.push({ search: queryString });
     setFilter(filter);
   };
 
   const changeCurrencyType = (type: string) => {
     const params = { ...filter, type };
     const queryString = qs.stringify(params);
-    history .push({ search: queryString });
+    history.push({ search: queryString });
     setFilter(params);
   };
 

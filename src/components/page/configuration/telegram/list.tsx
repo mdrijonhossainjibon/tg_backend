@@ -1,4 +1,5 @@
 import {   Table,  Tag,  Card,    Switch,   Space,   Button, Modal, Select, Tabs, Input } from "antd";
+import { Image } from 'antd-mobile';
 import { useEffect, useState } from "react";
 import {   SettingOutlined,  RobotOutlined,  KeyOutlined, DeleteOutlined } from "@ant-design/icons"; // Importing icons
 import { ChannelConfig, deleteChannelConfigRequest, fetchBotConfigRequest, fetchChannelConfigRequest, putBotConfigRequest, putChannelConfigRequest, RootState } from "modules";
@@ -40,7 +41,6 @@ export default function List() {
     const {  channelConfig   , loading , botConfig  } = useSelector((state: RootState) => state.public.Telegram);
 
   
-    // Sample data for channels
    
 
     // Handle modal visibility and setting the selected channel for removal
@@ -81,15 +81,24 @@ export default function List() {
     // Define the columns for the Ant Design table for channels
     const channelColumns = [
         {
+            title: "#",
+            dataIndex: "path",
+            key: "path",
+            render : (_ : any, path : any) => {
+              
+                return  <Image className=" rounded-full" width={ 25 } height={ 25 } src={`https://api.telegram.org/file/bot7837648046:AAE6IDa6EleiVEJNzkz1oQ6bwIFNcp0xKg0/${ path.path }`}  />
+            }
+        },
+        {
             title: "Username",
             dataIndex: "username",
             key: "username",
         },
         {
             title: "Channel URL",
-            dataIndex: "channelurl",
-            key: "channelUrls",
-            render: (text: string) => <a href={text}>{text}</a>,
+            dataIndex: "title",
+            key: "title",
+            render: (text: string, option : any) => <a href={`https://t.me/${option.url}`}>{text}</a>,
         },
         {
             title: "Status",
@@ -236,7 +245,7 @@ export default function List() {
                     </Space>
                     <Table
                         pagination={false}
-                        columns={channelColumns}
+                        columns={channelColumns as any}
                         dataSource={filteredChannels}
                         loading={ loading }
                     />

@@ -1,14 +1,17 @@
-import { Loading3QuartersOutlined } from "@ant-design/icons";
-import { lazy, Suspense, useEffect } from "react";
-import { Redirect, BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
+
+import { lazy, Suspense, useEffect, useMemo  } from "react";
+import { Redirect, BrowserRouter as Router, Switch } from "react-router-dom";
 import { AuthProvider as AuthContextProvider } from "context";
 import { PrivateRoute, PublicRoute } from "Routes";
 import { useDispatch } from "react-redux";
-import {   setQueryParams } from "modules";
+import { setQueryParams } from "modules";
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { Routes } from "constants/routes";
 import MainLayout from "./components/MainLayout";
-
+import { LoadingSpinner } from "components/LoadingSpinner";
+import './App.css'
+import { ConfigProvider, theme } from "antd";
+ 
 interface User {
   id: number;
   first_name: string;
@@ -35,9 +38,10 @@ const ConfigurationsLayouts = lazy(() => import('components/page/configuration/C
 const OperationsLayout = lazy(() => import('components/page/operations/OperationsLayout'));
 function App() {
 
-  const queryParams: any = {};
   const dispatch = useDispatch(); // Initialize dispatch
- 
+  const queryParams = useMemo(() => ({} as any), []);
+   
+
 
   useEffect(() => {
     if (window.Telegram) {
@@ -60,29 +64,42 @@ function App() {
 
       // Dispatch the query params to Redux
       dispatch(setQueryParams(queryParams));
-
     }
-  }, [dispatch, window.Telegram]);
+  }, [dispatch, queryParams]); // Memoized queryParams won't change on every render
+
+ 
 
 
   return (
     <>
       <GoogleOAuthProvider clientId="109113138013-tv5kg8bh40tub6lgqi1tpm5jofvn2dis.apps.googleusercontent.com">
         <Router>
-          <Suspense fallback={<Loading3QuartersOutlined />}>
+          <Suspense fallback={<LoadingSpinner />}>
             <AuthContextProvider>
-              <MainLayout>  
-                <Switch>
-               
-                <PublicRoute exact path={Routes.Login} component={ auth } />
-                 <PublicRoute exact path={ Routes.Adjustments } component={ Task_page as any }/>
-                <PrivateRoute path={Routes.Users } component={ TelegramUsers } />
-                <PrivateRoute path={Routes.Configuration} component={ConfigurationsLayouts} />
-                <PrivateRoute path={Routes.Operations} component={ OperationsLayout } />
-                <Redirect to={  Routes.Users } />
-                
-              </Switch>
-              </MainLayout>
+              <ConfigProvider theme={{
+                token: {
+                  colorPrimary: '#ff0000', // Customize primary color
+                  colorBgLayout: '#001529', // Custom background color for the layout
+                  colorBgContainer: '#001529',
+                }, 
+                 algorithm : theme.darkAlgorithm
+              }} >
+                <MainLayout>
+                  <Switch>
+
+                    <PublicRoute exact path={Routes.Login} component={auth} />
+                    <PublicRoute exact path={Routes.Adjustments} component={ChequeActivated as any} />
+                    <PublicRoute exact path={Routes.Dashboard} component={Task_page as any} />
+                    <PrivateRoute path={Routes.Users} component={TelegramUsers} />
+                    <PrivateRoute path={Routes.Configuration} component={ConfigurationsLayouts} />
+                    <PrivateRoute path={Routes.Operations} component={OperationsLayout} />
+                    <Redirect to={Routes.Users} />
+
+                  </Switch>
+                </MainLayout>
+
+              </ConfigProvider>
+
             </AuthContextProvider>
           </Suspense>
         </Router>

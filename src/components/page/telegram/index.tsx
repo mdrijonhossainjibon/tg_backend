@@ -1,13 +1,16 @@
 import {   FilterOutlined, ReloadOutlined,      StopOutlined, CheckOutlined } from "@ant-design/icons";
-import { Button, Card, Input, Space, Table } from "antd";
+import { Button, Card, Input, Space, Table    } from "antd";
   
-import {  RootState } from "modules";
+import {  RootState   } from "modules";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
  
 import { useDate } from "utils";
 import UserStatus from "./UserStatus";
 import { UserRole, UserState } from "constants/user";
+import { fetchUserTgRequest } from "modules/users";
+import { useEffect } from "react";
+ 
 
 export default function TelegramUsers() {
     const { t } = useTranslation();
@@ -30,23 +33,29 @@ export default function TelegramUsers() {
         // dispatch(banUserRequest(uid)); // Example action
     };
 
-    
+
+    useEffect(() =>{
+        dispatch(fetchUserTgRequest());
+    } ,[ dispatch ])
 
     return (
         <>
             <Card
                 title='Telegram Users'
+                 
                 extra={
                     <Space key="space">
-                        <Button key="reload" loading={loading} icon={<ReloadOutlined />}  >
+                        <Button key="reload" loading={loading} icon={<ReloadOutlined />}  onClick={() => dispatch(fetchUserTgRequest())}>
                             {t("setter.layouts.configurations.blockchains.table.reload")}
                         </Button>
                     </Space>
                 }
-            >
+            > 
+          
                 <Table
                     loading={loading}
                     dataSource={users}
+                   
                     columns={[
                         {
                             title: '#',

@@ -2,15 +2,7 @@
 import { Layout } from "antd";
 import { useTranslation } from "react-i18next";
 
-import {
-    AuditOutlined,
-    PieChartOutlined,
-    DownloadOutlined,
-    UploadOutlined,
-    FieldTimeOutlined,
-    TransactionOutlined,
-    ControlOutlined,
-} from "@ant-design/icons";
+import {  UploadOutlined,  FieldTimeOutlined, } from "@ant-design/icons";
 
 import TabbedMenuLayout from "../../TabbedMenuLayout";
 
@@ -57,11 +49,8 @@ export default function OperationsLayout() {
                 <Switch >  
                      
                      <Route path={Routes.Withdrawals} component={withdrawals} />
-
-                     <Route path={Routes.PendingWithdrawals} component={pendingWithdrawals} />
- 
-
-                    <Redirect to={Routes.Withdrawals} />
+                      <Route path={Routes.PendingWithdrawals} component={pendingWithdrawals} />
+                     <Redirect to={Routes.Withdrawals} />
                 </Switch>
             </Content>
         </>

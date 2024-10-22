@@ -20,13 +20,13 @@ const renderMergedProps = (component : ComponentType<any> , ...rest) => {
 
 export const PrivateRoute :FC<PrivateRouteProps> = ({ component  , ...rest }) => {
      
-  const { uid  , role   } =  useAuthContext();
+  const { authorized   } =  useAuthContext();
     
    
     return (
       <Route
         {...rest}
-        render={(props) => true  ?  (  renderMergedProps(component, props, rest) )  :  <Redirect to={{ pathname: Routes.Login, state: { from: props.location } }} />
+        render={(props) => authorized ?  (  renderMergedProps(component, props, rest) )  :  <Redirect to={{ pathname: Routes.Login, state: { from: props.location } }} />
         }
       />
     );
@@ -41,7 +41,7 @@ export const PrivateRoute :FC<PrivateRouteProps> = ({ component  , ...rest }) =>
         {...rest}
         render={(props) =>
           authorized ? (
-            <Redirect to={{ pathname: Routes.Dashboard, state: { from: props.location } }} />
+            <Redirect to={{ pathname: Routes.Users, state: { from: props.location } }} />
           ) : (
             renderMergedProps(component, props, rest)
           )
